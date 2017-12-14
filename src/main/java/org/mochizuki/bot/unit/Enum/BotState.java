@@ -1,5 +1,6 @@
 package org.mochizuki.bot.unit.Enum;
 
+@Deprecated
 public enum BotState {
 
     CONSTRUCTION,PRE_INITIALIZATION,INITIALIZATION,POST_INITIALIZATION,

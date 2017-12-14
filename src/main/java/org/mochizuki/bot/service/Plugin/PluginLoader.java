@@ -47,7 +47,7 @@ public class PluginLoader {
         if(notHavePluginConfig) return null;
 
         logger.info("Loading Pligin config");
-//        this.hoconReader = new HoconReader(logger).setPath(configPath).init();
+//              this.hoconReader = new HoconReader(logger).setPath(configPath).init();
         try {
         Path path = Paths.get(".","plugin");
         PluginFileVisitor pluginFileVisitor = new PluginFileVisitor();
@@ -86,7 +86,7 @@ public class PluginLoader {
                         Method[] aClassMethods = aClass.getMethods();
                         for (Method aClassMethod : aClassMethods) {
                             if (aClassMethod.isAnnotationPresent(Listener.class)){
-                                logger.info("Debug : Methods" + aClassMethod.getName() + "have Ann");
+                                logger.info("Debug : Methods" + aClassMethod.getName() + "have Annotation");
                                 logger.info("Debug : " + aClassMethod.getDeclaringClass().getSimpleName());
                                 eventManager.registerListener(aClassMethod);
                             }
@@ -94,7 +94,7 @@ public class PluginLoader {
                     }
                 }
             }
-            }
+        }
 
 
         }catch(ArrayIndexOutOfBoundsException e) {
