@@ -3,12 +3,14 @@ package org.mochizuki.bot;
 
 import org.mochizuki.bot.unit.LoggerFormatter;
 
+import java.io.IOException;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args)  {
         String version = "Alpha 1.0";
         Logger logger = Logger.getLogger("Main thread");
 
@@ -22,11 +24,16 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.err.print("System build 0.1120");
+        System.err.print("System build 0.1215");
         logger.info("Starting L2 cache support system");
         logger.info("version " + version);
 
         Bot bot_main = new Bot();
-        bot_main.onInitialization();
+
+        try {
+            bot_main.onInitialization();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

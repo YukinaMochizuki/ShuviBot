@@ -1,6 +1,6 @@
 package org.mochizuki.bot.service.unit;
 
-import org.mochizuki.bot.io.HoconReader;
+import org.mochizuki.bot.configIO.HoconReader;
 
 import java.nio.file.Path;
 import java.util.logging.Logger;

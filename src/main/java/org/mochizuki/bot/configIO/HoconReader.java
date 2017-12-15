@@ -1,18 +1,16 @@
-package org.mochizuki.bot.io;
+package org.mochizuki.bot.configIO;
 
 import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import ninja.leaping.configurate.hocon.HoconConfigurationLoader;
 import ninja.leaping.configurate.loader.ConfigurationLoader;
-import org.mochizuki.bot.Bot;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
-//
+
 public class HoconReader {
     private Path Path;
     private Logger logger;
@@ -23,15 +21,6 @@ public class HoconReader {
         this.logger = logger;
     }
 
-//  Don't use!
-    @Deprecated
-    public void setValue(String[] node,String value){
-        CommentedConfigurationNode targetNode = rootNode;
-        for(int n = 0;n < node.length;n++){
-            targetNode = rootNode.getNode(node[n]);
-        }
-        targetNode.setValue(value);
-    }
 
     public void setValue(String node1,String value){
         rootNode.getNode(node1).setValue(value);
@@ -53,15 +42,6 @@ public class HoconReader {
         rootNode.getNode(node1,node2,node3,node4,node5).setValue(value);
     }
 
-//  Don't use!
-    @Deprecated
-    public String getValue(String[] node){
-        CommentedConfigurationNode targetNode = rootNode;
-        for(int n = 0;n < node.length;n++){
-            targetNode = rootNode.getNode(node[n]);
-        }
-        return String.valueOf(targetNode.getValue("null"));
-    }
 
     public String getValue(String node1){
         return String.valueOf(rootNode.getNode(node1).getValue("null"));
