@@ -2,15 +2,18 @@ package org.mochizuki.bot.service.Plugin;
 
 import com.google.common.reflect.ClassPath;
 import org.mochizuki.bot.configIO.HoconReader;
+import org.mochizuki.bot.service.Annotation.Inject;
 import org.mochizuki.bot.service.Annotation.Listener;
 import org.mochizuki.bot.service.Annotation.Plugin;
 import org.mochizuki.bot.service.EventManager;
+import org.mochizuki.bot.service.InjectService;
 import org.mochizuki.bot.service.PluginManager;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 import org.mochizuki.bot.unit.PluginFileVisitor;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -23,11 +26,9 @@ import java.util.logging.Logger;
 
 public class PluginLoader {
     private Logger logger;
-    private Path configPath;
-    private boolean notHavePluginConfig = false;
-    private HoconReader hoconReader;
     private PluginManager pluginManager;
     private EventManager eventManager;
+    private InjectService injectService;
 
     public PluginLoader(PluginManager pluginManager){
         this.logger = Logger.getLogger("PluginLoader");
@@ -35,19 +36,12 @@ public class PluginLoader {
 
         this.pluginManager = pluginManager;
         this.eventManager = pluginManager.getEventRegister();
-
-//        this.configPath = Paths.get(".","plugin.conf");
-//        if(!Files.exists(configPath)){
-//            logger.info("Plugin config not find");
-//            notHavePluginConfig = true;
-//        }
+        this.injectService = pluginManager.getInjectService();
     }
 
     public PluginLoader init(){
-        if(notHavePluginConfig) return null;
 
         logger.info("Loading Pligin config");
-//              this.hoconReader = new HoconReader(logger).setPath(configPath).init();
         try {
         Path path = Paths.get(".","plugin");
         PluginFileVisitor pluginFileVisitor = new PluginFileVisitor();
@@ -63,16 +57,19 @@ public class PluginLoader {
             URLClassLoader pluginUrlClassLoader = new URLClassLoader(new URL[] {url});
 
             Class<?> pluginClass = null;
-//            try {
-//                pluginClass = pluginUrlClassLoader.loadClass(className);
-//                Annotation[] annotatedArrayType = pluginClass.getAnnotations();
-//                if(annotatedArrayType != null)logger.info(annotatedArrayType[0].toString());
-//                logger.info(pluginClass.getName());
-//            } catch (ClassNotFoundException e) {
-//                logger.warning(path.getFileName().toString() + "not had same name .class can be loading");
-//                logger.warning(path.getFileName().toString() + "loading error");
-//                pluginIsSafe = false;
-//            }
+
+            /*
+            try {
+                pluginClass = pluginUrlClassLoader.loadClass(className);
+                Annotation[] annotatedArrayType = pluginClass.getAnnotations();
+                if(annotatedArrayType != null)logger.info(annotatedArrayType[0].toString());
+                logger.info(pluginClass.getName());
+            } catch (ClassNotFoundException e) {
+                logger.warning(path.getFileName().toString() + "not had same name .class can be loading");
+                logger.warning(path.getFileName().toString() + "loading error");
+                pluginIsSafe = false;
+            }
+                    */
 
             ClassPath classPath = ClassPath.from(pluginUrlClassLoader);
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClasses()) {
@@ -86,9 +83,21 @@ public class PluginLoader {
                         Method[] aClassMethods = aClass.getMethods();
                         for (Method aClassMethod : aClassMethods) {
                             if (aClassMethod.isAnnotationPresent(Listener.class)){
-                                logger.info("Debug : Methods" + aClassMethod.getName() + "have Annotation");
+                                logger.info("Debug : Methods" + aClassMethod.getName() + "have Listener Annotation");
                                 logger.info("Debug : " + aClassMethod.getDeclaringClass().getSimpleName());
                                 eventManager.registerListener(aClassMethod);
+                            }
+                            if(aClassMethod.isAnnotationPresent(Inject.class)){
+                                logger.info("Debug  : Methods" + aClassMethod.getName() + "have Inject Annotation");
+                                injectService.Inject(aClassMethod);
+                            }
+                        }
+                        Field[] aClassFields = aClass.getDeclaredFields();
+                        for (Field aClassField : aClassFields){
+                            if(aClassField.isAnnotationPresent(Inject.class)){
+                                logger.info("Debug : Field" + aClassField.getName() + "have Inject Annotation");
+                                aClassField.setAccessible(true);
+                                injectService.Inject(aClassField);
                             }
                         }
                     }

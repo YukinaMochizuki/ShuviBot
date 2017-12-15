@@ -10,6 +10,9 @@ import org.mochizuki.bot.service.ServiceManager;
 import org.mochizuki.bot.unit.DefaultConfig;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
+import org.telegram.telegrambots.ApiContextInitializer;
+import org.telegram.telegrambots.TelegramBotsApi;
+import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -22,6 +25,7 @@ public class Bot {
     private HoconReader hoconReader;
     private Logger logger;
     private Telegram telegram;
+    private ServiceManager serviceManager;
 
     Bot(){
         this.logger = Logger.getLogger("Bot Main");
@@ -59,19 +63,19 @@ public class Bot {
 
 //              Instantiate Telegram Bots API
         logger.info("Instantiate Telegram Bots API...");
-//        ApiContextInitializer.init();
-//        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-//        this.telegram = new Telegram();
-//        try {
-//            telegramBotsApi.registerBot(this.telegram);
-//        } catch (TelegramApiException e) {
-//            e.printStackTrace();
-//        }
+        ApiContextInitializer.init();
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        this.telegram = new Telegram(this);
+        try {
+            telegramBotsApi.registerBot(this.telegram);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
         System.err.print("OK");
 //        telegram.sendMessage(240322569,"the init is done");
 
 //              Instantiate ServiceManager
-        ServiceManager serviceManager = new ServiceManager(this).init();
+        this.serviceManager = new ServiceManager(this).init();
         logger.info("Instantiate ServiceManager completed");
 
 //              Instantiate ConversationManager
@@ -79,13 +83,14 @@ public class Bot {
         ConversationManager conversationManager = new ConversationManager(serviceManager);
 
 //              Starting load plugin
-        PluginManager pluginManager = new PluginManager().init();
+        logger.info("Instantiate Plugin Manager");
+        PluginManager pluginManager = new PluginManager(serviceManager).init();
 
 
 
 
-//              Set listener ready
-//        telegram.setAllReady(true);
+//              Set  Telegram listener ready
+        telegram.setAllReady(true);
     }
 
     public HoconReader getStorage(){
@@ -96,5 +101,8 @@ public class Bot {
     }
     public Telegram getTelegram(){
         return telegram;
+    }
+    public ServiceManager getServiceManager() {
+        return serviceManager;
     }
 }

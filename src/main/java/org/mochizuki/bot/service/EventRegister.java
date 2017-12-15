@@ -32,7 +32,6 @@ public class EventRegister {
                 getAnnotation(Plugin.class).id(),"Listener type is not define");
         else {
             eventBusUnitArrayList.add(new EventBusUnit(method,listener.eventType()));
-            System.out.println("Listener has be setting");
         }
     }
 

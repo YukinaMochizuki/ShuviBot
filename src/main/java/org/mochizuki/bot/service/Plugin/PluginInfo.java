@@ -1,7 +1,8 @@
 package org.mochizuki.bot.service.Plugin;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import org.mochizuki.bot.service.Annotation.Plugin;
-import org.mochizuki.bot.event.*;
 
 import java.lang.reflect.Method;
 

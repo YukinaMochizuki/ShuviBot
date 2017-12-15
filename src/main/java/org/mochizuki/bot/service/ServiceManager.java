@@ -15,6 +15,7 @@ public class ServiceManager {
     private HoconReader hoconReader;
     private Logger logger;
     private BasicIO basicIO;
+    private ConversationManager conversationManager;
 
 
     private String nowCommunicate;
@@ -42,6 +43,9 @@ public class ServiceManager {
                 hoconReader.getValue("Bot","ServiceManager","BasicIO","type").equals("Hocon"))
             basicIO.setHoconType();
 
+//              Init conversation
+        this.conversationManager = new ConversationManager(this);
+
         return this;
     }
 
@@ -58,8 +62,10 @@ public class ServiceManager {
     public String getNowCommunicate(){
         return this.nowCommunicate;
     }
-
     public Telegram getTelegram() {
         return telegram;
+    }
+    public ConversationManager getConversationManager() {
+        return conversationManager;
     }
 }
