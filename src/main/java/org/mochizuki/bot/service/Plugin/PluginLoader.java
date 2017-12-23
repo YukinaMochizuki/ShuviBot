@@ -85,10 +85,12 @@ public class PluginLoader {
                             if (aClassMethod.isAnnotationPresent(Listener.class)){
                                 logger.info("Debug : Methods " + aClassMethod.getName() + " have Listener Annotation");
                                 logger.info("Debug : " + aClassMethod.getDeclaringClass().getSimpleName());
+                                aClassMethod.setAccessible(true);
                                 eventManager.registerListener(aClassMethod);
                             }
                             if(aClassMethod.isAnnotationPresent(Inject.class)){
                                 logger.info("Debug  : Methods " + aClassMethod.getName() + " have Inject Annotation");
+                                aClassMethod.setAccessible(true);
                                 injectService.Inject(aClassMethod);
                             }
                         }
