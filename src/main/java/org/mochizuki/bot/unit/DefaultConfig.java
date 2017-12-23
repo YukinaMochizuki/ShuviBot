@@ -1,6 +1,6 @@
 package org.mochizuki.bot.unit;
 
-import org.mochizuki.bot.io.HoconReader;
+import org.mochizuki.bot.configIO.HoconReader;
 
 public class DefaultConfig {
     private HoconReader hoconReader;

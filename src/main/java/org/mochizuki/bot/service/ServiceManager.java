@@ -3,11 +3,11 @@ package org.mochizuki.bot.service;
 import org.mochizuki.bot.Bot;
 import org.mochizuki.bot.communicate.Communicate;
 import org.mochizuki.bot.communicate.Telegram;
-import org.mochizuki.bot.io.HoconReader;
-import org.mochizuki.bot.service.manager.project.ProjectManager;
+import org.mochizuki.bot.configIO.HoconReader;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 
+import javax.validation.constraints.NotNull;
 import java.util.logging.Logger;
 
 public class ServiceManager {
@@ -15,8 +15,8 @@ public class ServiceManager {
     private HoconReader hoconReader;
     private Logger logger;
     private BasicIO basicIO;
+    private ConversationManager conversationManager;
 
-    private ProjectManager projectManager;
 
     private String nowCommunicate;
 
@@ -43,13 +43,13 @@ public class ServiceManager {
                 hoconReader.getValue("Bot","ServiceManager","BasicIO","type").equals("Hocon"))
             basicIO.setHoconType();
 
+//              Init conversation
+        this.conversationManager = new ConversationManager(this);
+
         return this;
     }
 
-    public ServiceManager initProjectManager(){
-        this.projectManager = new ProjectManager(this).init();
-        return this;
-    }
+
 
     public BasicIO getBasicIO(){
         if (this.basicIO == null) {
@@ -62,12 +62,10 @@ public class ServiceManager {
     public String getNowCommunicate(){
         return this.nowCommunicate;
     }
-
-    public ProjectManager getProjectManager() {
-        return projectManager;
-    }
-
     public Telegram getTelegram() {
         return telegram;
+    }
+    public ConversationManager getConversationManager() {
+        return conversationManager;
     }
 }

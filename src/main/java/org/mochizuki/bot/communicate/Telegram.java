@@ -79,6 +79,7 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
     }
 
     public void setAllReady(boolean allReady) {
+        this.serviceManager = bot.getServiceManager();
         this.allReady = allReady;
     }
 }
