@@ -41,7 +41,7 @@ public class PluginLoader {
 
     public PluginLoader init(){
 
-//        logger.info("Loading Pligin config");
+//        logger.info("Loading Plugin config");
         try {
         Path path = Paths.get(".","plugin");
         PluginFileVisitor pluginFileVisitor = new PluginFileVisitor();
