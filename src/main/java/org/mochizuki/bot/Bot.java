@@ -47,10 +47,18 @@ public class Bot {
         this.hoconReader = new HoconReader(logger).setPath(configPath).init();
 
 //              Import default config
-        if(willSetDefault)new DefaultConfig(this.hoconReader).setDefaultConfig();
+        if(willSetDefault){
+            new DefaultConfig(this.hoconReader).setDefaultConfig();
+            logger.info("Default Config has be created, please setting it");
+            return;
+        }
 
-//              Setting Logger level
+//              Import and setting config
         GlobalSetting.setLoggerSetting(hoconReader.getValue("Bot","Global","Logger-level"));
+        GlobalSetting.setBotToken(hoconReader.getValue("Bot","Telegram","BotToken"));
+        GlobalSetting.setBotName(hoconReader.getValue("Bot","Telegram","BotName"));
+
+
         LoggerLevels.setLoggerLevels(logger,GlobalSetting.getLoggerSetting());
         logger.info("Set Logger levels to " + GlobalSetting.getLoggerSetting());
 
@@ -86,7 +94,7 @@ public class Bot {
         logger.info("Instantiate Plugin Manager");
         PluginManager pluginManager = new PluginManager(serviceManager).init();
 
-
+        logger.info("test");
 
 
 //              Set  Telegram listener ready

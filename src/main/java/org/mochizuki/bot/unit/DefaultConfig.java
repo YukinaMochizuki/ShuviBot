@@ -13,6 +13,8 @@ public class DefaultConfig {
 //              Default option
         hoconReader.setValue("Bot","ServiceManager","BasicIO","type","Hocon");
         hoconReader.setValue("Bot","Global","Logger-level","INFO");
+        hoconReader.setValue("Bot","Telegram","BotToken","123456789:ABCDEFGH");
+        hoconReader.setValue("Bot","Telegram","BotName","BotName");
 
         saveFile();
     }

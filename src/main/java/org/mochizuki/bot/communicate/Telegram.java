@@ -2,6 +2,7 @@ package org.mochizuki.bot.communicate;
 
 import org.mochizuki.bot.Bot;
 import org.mochizuki.bot.service.ServiceManager;
+import org.mochizuki.bot.unit.GlobalSetting;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -61,12 +62,12 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
 
     @Override
     public String getBotUsername(){
-        return "Mochizuki_bot";
+        return GlobalSetting.getBotName();
     }
 
     @Override
     public String getBotToken(){
-        return "492635588:AAGRLpxwMBtpW6Lulhy30Ny3bOJYSTGkn34";
+        return GlobalSetting.getBotToken();
     }
 
     @Override
