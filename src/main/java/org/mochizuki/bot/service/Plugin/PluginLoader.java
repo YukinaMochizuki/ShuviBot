@@ -83,19 +83,19 @@ public class PluginLoader {
                         Method[] aClassMethods = aClass.getMethods();
                         for (Method aClassMethod : aClassMethods) {
                             if (aClassMethod.isAnnotationPresent(Listener.class)){
-                                logger.info("Debug : Methods" + aClassMethod.getName() + "have Listener Annotation");
+                                logger.info("Debug : Methods " + aClassMethod.getName() + " have Listener Annotation");
                                 logger.info("Debug : " + aClassMethod.getDeclaringClass().getSimpleName());
                                 eventManager.registerListener(aClassMethod);
                             }
                             if(aClassMethod.isAnnotationPresent(Inject.class)){
-                                logger.info("Debug  : Methods" + aClassMethod.getName() + "have Inject Annotation");
+                                logger.info("Debug  : Methods " + aClassMethod.getName() + " have Inject Annotation");
                                 injectService.Inject(aClassMethod);
                             }
                         }
                         Field[] aClassFields = aClass.getDeclaredFields();
                         for (Field aClassField : aClassFields){
                             if(aClassField.isAnnotationPresent(Inject.class)){
-                                logger.info("Debug : Field" + aClassField.getName() + "have Inject Annotation");
+                                logger.info("Debug : Field " + aClassField.getName() + " have Inject Annotation");
                                 aClassField.setAccessible(true);
                                 injectService.Inject(aClassField);
                             }
