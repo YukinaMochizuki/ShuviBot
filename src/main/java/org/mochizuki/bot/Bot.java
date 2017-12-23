@@ -94,8 +94,6 @@ public class Bot {
         logger.info("Instantiate Plugin Manager");
         PluginManager pluginManager = new PluginManager(serviceManager).init();
 
-        logger.info("test");
-
 
 //              Set  Telegram listener ready
         telegram.setAllReady(true);
