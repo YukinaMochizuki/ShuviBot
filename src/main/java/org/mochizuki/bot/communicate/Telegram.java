@@ -1,5 +1,7 @@
 package org.mochizuki.bot.communicate;
 
+import org.mochizuki.bot.Bot;
+import org.mochizuki.bot.service.ServiceManager;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -8,6 +10,12 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 public class Telegram extends TelegramLongPollingBot implements Communicate {
 
     private boolean allReady = false;
+    private Bot bot;
+    private ServiceManager serviceManager;
+
+    public Telegram(Bot bot){
+        this.bot = bot;
+    }
 
     public void sendMessage(long chat_id,String message_text){
         SendMessage message = new SendMessage() // Create a message object object
@@ -29,6 +37,7 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
                 String message_text = update.getMessage().getText();
                 long chat_id = update.getMessage().getChatId();
                 System.out.println(message_text);
+                serviceManager.communicate(message_text,this);
             }
         }
         // We check if the update has a message and the message has text
@@ -36,6 +45,8 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
 //            // Set variables
 //            String message_text = update.getMessage().getText();
 //            long chat_id = update.getMessage().getChatId();
+//
+//            System.out.print(chat_id);
 //
 //            SendMessage message = new SendMessage() // Create a message object object
 //                    .setChatId(chat_id)
@@ -50,18 +61,17 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
 
     @Override
     public String getBotUsername(){
-        return "mochizuki_no_bot";
+        return "Mochizuki_bot";
     }
 
     @Override
     public String getBotToken(){
-        return "334160538:AAH5zUjzrZ6BI3Yp-HG_KdtoXGOTGEd-eRM";
+        return "492635588:AAGRLpxwMBtpW6Lulhy30Ny3bOJYSTGkn34";
     }
 
     @Override
     public String nowCommunicate() {
-        String nowCommunicate = "Telegram";
-        return nowCommunicate;
+        return "Telegram";
     }
 
     public boolean isAllReady() {

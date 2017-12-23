@@ -62,7 +62,7 @@ public class Bot {
         logger.info("Instantiate Telegram Bots API...");
         ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
-        this.telegram = new Telegram();
+        this.telegram = new Telegram(this);
         try {
             telegramBotsApi.registerBot(this.telegram);
         } catch (TelegramApiException e) {
