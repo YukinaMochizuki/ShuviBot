@@ -17,10 +17,11 @@ import java.util.logging.Logger;
 
 public class InjectService {
     private BasicIO basicIO;
-    private PluginManagerInterface pluginManagerInterface;
     private PluginManager pluginManager;
     private ConversationManager conversationManager;
     private Telegram telegram;
+    private PluginManagerInterface pluginManagerInterface;
+    private ServiceInterface serviceInterface;
 
     private ArrayList<InjectBusUnit> injectBusUnitArrayList = new ArrayList<>();
 
@@ -30,6 +31,7 @@ public class InjectService {
         this.telegram = serviceManager.getTelegram();
         this.pluginManagerInterface = pluginManager;
         this.pluginManager = pluginManager;
+        this.serviceInterface = serviceManager;
     }
 
     public void startingImport(){
@@ -80,6 +82,9 @@ public class InjectService {
 //              Telegram
         else if(parameterTypes[0].getName().equals(Telegram.class.getName()))
             injectBusUnitArrayList.add(new InjectBusUnit(method,telegram));
+//              Service Interface
+        else if(parameterTypes[0].getName().equals(ServiceInterface.class.getName()))
+            injectBusUnitArrayList.add(new InjectBusUnit(method,serviceInterface));
 //              Logger
         else if (parameterTypes[0].getName().equals(Logger.class.getName()))
             injectBusUnitArrayList.add(new
@@ -127,6 +132,9 @@ public class InjectService {
 //              Telegram
         else if(fieldComponentType.getName().equals(Telegram.class.getName()))
             injectBusUnitArrayList.add(new InjectBusUnit(field,telegram));
+//              Service Interface
+        else if(fieldComponentType.getName().equals(ServiceInterface.class.getName()))
+            injectBusUnitArrayList.add(new InjectBusUnit(field,serviceInterface));
 //              Logger
         else if(fieldComponentType.getName().equals(Logger.class.getName()))
             injectBusUnitArrayList.add(new

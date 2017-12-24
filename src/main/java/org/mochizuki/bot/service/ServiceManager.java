@@ -10,7 +10,7 @@ import org.mochizuki.bot.unit.LoggerLevels;
 import javax.validation.constraints.NotNull;
 import java.util.logging.Logger;
 
-public class ServiceManager {
+public class ServiceManager implements ServiceInterface {
     private Telegram telegram;
     private HoconReader hoconReader;
     private Logger logger;
