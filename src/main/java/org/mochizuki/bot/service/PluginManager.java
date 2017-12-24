@@ -41,6 +41,10 @@ public class PluginManager implements PluginManagerInterface {
         injectService.startingImport();
         eventManager.settingUpListener();
         eventManager.post(new Event().setEventType(EventType.BotConstructionEvent));
+        eventManager.post(new Event().setEventType(EventType.BotPreInitializationEvent));
+        eventManager.post(new Event().setEventType(EventType.BotInitializationEvent));
+        eventManager.post(new Event().setEventType(EventType.BotPostInitializationEvent));
+
         return this;
     }
 
