@@ -1,7 +1,6 @@
 package org.mochizuki.bot.service.Plugin;
 
 import com.google.common.reflect.ClassPath;
-import org.mochizuki.bot.configIO.HoconReader;
 import org.mochizuki.bot.service.Annotation.Inject;
 import org.mochizuki.bot.service.Annotation.Listener;
 import org.mochizuki.bot.service.Annotation.Plugin;
@@ -35,7 +34,7 @@ public class PluginLoader {
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
 
         this.pluginManager = pluginManager;
-        this.eventManager = pluginManager.getEventRegister();
+        this.eventManager = pluginManager.getEventManager();
         this.injectService = pluginManager.getInjectService();
     }
 

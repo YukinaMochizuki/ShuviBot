@@ -15,8 +15,10 @@ public class ServiceManager implements ServiceInterface {
     private HoconReader hoconReader;
     private Logger logger;
     private BasicIO basicIO;
-    private ConversationManager conversationManager;
 
+    private ConversationManager conversationManager;
+    private CommandManager commandManager;
+    private PluginManager pluginManager;
 
     private String nowCommunicate;
 
@@ -33,18 +35,28 @@ public class ServiceManager implements ServiceInterface {
     }
 
     public ServiceManager init(){
-//              Instantiate BIOS
+//        Instantiate BIOS
         this.basicIO = new BasicIO();
 
         logger.info("Instantiate Service Manager");
 
-//              Default type is Hocon
+//        Default type is Hocon
         if(hoconReader.getValue("Bot","ServiceManager","BasicIO","type").equals("null") ||
                 hoconReader.getValue("Bot","ServiceManager","BasicIO","type").equals("Hocon"))
             basicIO.setHoconType();
 
-//              Init conversation
+
+//        Instantiate ConversationManager
+        logger.info("Instantiate ConversationManager");
         this.conversationManager = new ConversationManager(this);
+
+//        Starting load plugin
+        logger.info("Instantiate Plugin Manager");
+        this.pluginManager = new PluginManager(this).init();
+
+//        Instantiate CommandManager
+        logger.info("Instantiate Command Manager ");
+        commandManager = new CommandManager(this).init().indexSystemCommand();
 
         return this;
     }
@@ -65,7 +77,14 @@ public class ServiceManager implements ServiceInterface {
     public Telegram getTelegram() {
         return telegram;
     }
+
     public ConversationManager getConversationManager() {
         return conversationManager;
+    }
+    public CommandManager getCommandManager() {
+        return commandManager;
+    }
+    public PluginManager getPluginManager() {
+        return pluginManager;
     }
 }

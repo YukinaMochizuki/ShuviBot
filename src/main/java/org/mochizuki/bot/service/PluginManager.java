@@ -103,7 +103,7 @@ public class PluginManager implements PluginManagerInterface {
     public ArrayList<PluginInfo> getPluginInfoArrayList() {
         return pluginInfoArrayList;
     }
-    public EventManager getEventRegister() {
+    public EventManager getEventManager() {
         return eventManager;
     }
     public BasicIO getBasicIO() {

@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Scanner;
 import java.util.logging.Logger;
 
 public class Bot {
@@ -86,17 +87,18 @@ public class Bot {
         this.serviceManager = new ServiceManager(this).init();
         logger.info("Instantiate ServiceManager completed");
 
-//              Instantiate ConversationManager
-        logger.info("Instantiate ConversationManager");
-        ConversationManager conversationManager = new ConversationManager(serviceManager);
-
-//              Starting load plugin
-        logger.info("Instantiate Plugin Manager");
-        PluginManager pluginManager = new PluginManager(serviceManager).init();
-
-
 //              Set  Telegram listener ready
         telegram.setAllReady(true);
+
+        serviceManager.getCommandManager().cellCommand("stop");
+
+//        Scanner scanner = new Scanner(System.in);
+//        while (true){
+//            String input = scanner.nextLine();
+//            if(input.startsWith("/")){
+//                serviceManager.getCommandManager().cellCommand(input.substring(1));
+//            }
+//        }
     }
 
     public HoconReader getStorage(){
