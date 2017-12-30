@@ -79,6 +79,7 @@ public class CommandManager {
                 if(commandIndexUnit.getName().compareTo(parameterArrayList.get(0)) == 0){
                     if(parameterArrayList.size() == commandIndexUnit.getParameters().length){
                         try {
+                            parameterArrayList.remove(0);
                             commandIndexUnit.invokeMethod(parameterArrayList.toArray());
                             return;
                         } catch (InvokeParameterException e) {
