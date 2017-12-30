@@ -59,6 +59,41 @@ public class CommandManager {
         if(commandManager != null)commandManager = inputCommandManager;
     }
 
+    public void cellCommand(ArrayList<String> parameterArrayList){
+        if(parameterArrayList.size() == 1){
+            for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
+                if(commandIndexUnit.getHasParameter())continue;
+                if(commandIndexUnit.getName().compareTo(parameterArrayList.get(0)) == 0){
+                    try {
+                        commandIndexUnit.invokeMethod();
+                        return;
+                    } catch (InvokeParameterException e) {
+                        logger.warning(e.getReason());
+                    } catch (NullPointerException e){
+                        logger.warning("The command  " + parameterArrayList.get(0) + " object is not inject");
+                    }
+                }
+            }
+        }else {
+            for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
+                if(commandIndexUnit.getName().compareTo(parameterArrayList.get(0)) == 0){
+                    if(parameterArrayList.size() == commandIndexUnit.getParameters().length){
+                        try {
+                            commandIndexUnit.invokeMethod(parameterArrayList.toArray());
+                            return;
+                        } catch (InvokeParameterException e) {
+                            logger.warning(e.getReason());
+                        } catch (NullPointerException e){
+                            logger.warning("The command  " + parameterArrayList.get(0) + " object is not inject");
+                        }
+                    }
+                }
+            }
+        }
+        logger.warning("Command " + parameterArrayList.get(0) + " not find");
+    }
+
+    @Deprecated
     public void cellCommand(String command,String ... parameter){
 
 //        Class commandClassInfo= SystemCommand.class;
@@ -72,38 +107,37 @@ public class CommandManager {
 //                }
 //            }
 //        }
-
-      if(parameter.length == 0){
-          for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
-              if(commandIndexUnit.getHasParameter())continue;
-              if(commandIndexUnit.getName().compareTo(command) == 0){
-                  try {
-                      commandIndexUnit.invokeMethod();
-                      return;
-                  } catch (InvokeParameterException e) {
-                      e.printStackTrace();
-                  } catch (NullPointerException e){
-                      logger.warning("The command  " + command + " object is not inject");
-                  }
-              }
-          }
-      }else {
-          for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
-              if(commandIndexUnit.getName().compareTo(command) == 0){
-                  if(parameter.length == commandIndexUnit.getParameters().length){
-                      try {
-                          commandIndexUnit.invokeMethod((Object) parameter);
-                          return;
-                      } catch (InvokeParameterException e) {
-                          e.printStackTrace();
-                      } catch (NullPointerException e){
-                          logger.warning("The command  " + command + " object is not inject");
-                      }
-                  }
-              }
-          }
-      }
-      logger.info("Command " + command + " not find");
+        if(parameter.length == 0){
+            for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
+                if(commandIndexUnit.getHasParameter())continue;
+                if(commandIndexUnit.getName().compareTo(command) == 0){
+                    try {
+                        commandIndexUnit.invokeMethod();
+                        return;
+                    } catch (InvokeParameterException e) {
+                        e.printStackTrace();
+                    } catch (NullPointerException e){
+                        logger.warning("The command  " + command + " object is not inject");
+                    }
+                }
+            }
+        }else {
+            for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
+                if(commandIndexUnit.getName().compareTo(command) == 0){
+                    if(parameter.length == commandIndexUnit.getParameters().length){
+                        try {
+                            commandIndexUnit.invokeMethod((Object) parameter);
+                            return;
+                        } catch (InvokeParameterException e) {
+                            e.printStackTrace();
+                        } catch (NullPointerException e){
+                            logger.warning("The command  " + command + " object is not inject");
+                        }
+                    }
+                }
+            }
+        }
+        logger.info("Command " + command + " not find");
     }
 
 

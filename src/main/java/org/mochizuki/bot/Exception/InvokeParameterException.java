@@ -10,6 +10,7 @@ public class InvokeParameterException extends Exception {
     private Class[] trueParameter;
 
     public InvokeParameterException(Method method, String reason){
+        this.reason = reason;
         this.trueParameter = method.getParameterTypes();
         this.giveParameterNumber = this.trueParameter.length;
     }

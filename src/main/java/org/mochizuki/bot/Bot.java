@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.Delayed;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class Bot {
@@ -90,15 +93,54 @@ public class Bot {
 //              Set  Telegram listener ready
         telegram.setAllReady(true);
 
-        serviceManager.getCommandManager().cellCommand("stop");
+//        serviceManager.getCommandManager().cellCommand("stop");
 
-//        Scanner scanner = new Scanner(System.in);
-//        while (true){
-//            String input = scanner.nextLine();
-//            if(input.startsWith("/")){
-//                serviceManager.getCommandManager().cellCommand(input.substring(1));
-//            }
-//        }
+        Scanner scanner = new Scanner(System.in);
+        logger.info("Command type ready");
+        while (true){
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println();
+            String input = scanner.nextLine();
+            if(input.startsWith("/")){
+                ArrayList<String> parameter = new ArrayList<>();
+                if(input.contains(" ")){
+                    boolean doFirst = true;
+                    int index_start = 0;
+                    int index_end = 0;
+                    while (true){
+                        index_start = input.indexOf(" ",index_start);
+
+                        if(doFirst){
+                            parameter.add(input.substring(1,index_start));
+                            doFirst = false;
+                        }
+
+                        if(index_start == -1)break;
+                        else {
+                            if(input.indexOf(" ",index_start + 1) != -1){
+                                index_end = input.indexOf(" ",index_start + 1);
+                                parameter.add(input.substring(index_start + 1,index_end - 1));
+                                index_start++;
+                            }else {
+                                parameter.add(input.substring(index_start + 1));
+                                index_start++;
+                            }
+                        }
+                    }
+                }else {
+                    parameter.add(input.substring(1));
+                }
+                serviceManager.getCommandManager().cellCommand(parameter);
+//                serviceManager.getCommandManager().cellCommand(parameter.get(0),(String[])parameter.toArray());
+//                for(String string : parameter){
+//                    System.out.println(string);
+//                }
+            }
+        }
     }
 
     public HoconReader getStorage(){

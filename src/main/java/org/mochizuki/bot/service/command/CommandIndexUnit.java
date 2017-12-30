@@ -10,7 +10,7 @@ public class CommandIndexUnit {
     private String name;
     private String description;
     private Boolean hasParameter;
-    private Class[] parameters;
+    private Class[] parameters = new Class[0];
 
     private Object object;
     private Method method;
