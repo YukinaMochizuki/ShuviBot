@@ -28,8 +28,9 @@ public class SystemCommand {
 
     @SystemCommandAnnotation
     public void stop(){
+        logger.info("Bot stopping...");
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotStoppingServerEvent));
-        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotStoppingServerEvent));
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotStoppedServerEvent));
         System.exit(1);
     }
 }

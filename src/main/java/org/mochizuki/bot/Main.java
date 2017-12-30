@@ -24,7 +24,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.err.print("System build 0.1229");
+        System.err.print("System build 0.1230");
         logger.info("Starting L2 cache support system");
         logger.info("version " + version);
 
@@ -32,6 +32,7 @@ public class Main {
 
         try {
             bot_main.onInitialization();
+            bot_main.startRunning();
         } catch (IOException e) {
             e.printStackTrace();
         }

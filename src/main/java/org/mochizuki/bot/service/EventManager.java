@@ -32,6 +32,28 @@ public class EventManager {
 //        TODO Error massage
     }
 
+    public void registerListener(EventType eventType,Method method){
+        try {
+            eventRegister.registerListener(eventType, method);
+        } catch (MethodListenerRegistrationError methodListenerRegistrationError) {
+            methodListenerRegistrationError.printStackTrace();
+        }
+//        TODO Error massage
+    }
+
+    public void registerSystemListener(EventType eventType,Method method,Object object){
+        try {
+            eventRegister.registerSystemListener(eventType, method, object);
+        } catch (MethodListenerRegistrationError methodListenerRegistrationError) {
+            methodListenerRegistrationError.printStackTrace();
+        }
+//        TODO Error massage
+    }
+//    TODO↓
+//    public void registerListener(String eventType,Method method){
+//
+//    }
+
     public void settingUpListener(){
         eventBusUnitArrayList = eventRegister.getEventBusUnitArrayList();
         isSettingUp = true;
@@ -41,7 +63,7 @@ public class EventManager {
         if(isSettingUp){
             EventType eventType = event.getEventType();
             for(EventBusUnit eventBusUnit : eventBusUnitArrayList){
-                if(eventBusUnit.getEventType().equals(eventType)){
+                if(eventBusUnit.getEventType().equals(eventType ) && eventBusUnit.getEventType() != EventType.NotDefine){
                     if(eventBusUnit.getPluginInfo() != null){
                         try {
                             eventBusUnit.getMethod().invoke(eventBusUnit.getPluginInfo().getObject(),event);
@@ -49,7 +71,14 @@ public class EventManager {
                             e.printStackTrace();
                             //        TODO Error massage
                         }
-                    }else {
+                    }else if(eventBusUnit.getObject() != null) {
+                        try {
+                            eventBusUnit.getMethod().invoke(eventBusUnit.getObject(),event);
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            e.printStackTrace();
+                            //        TODO Error massage
+                        }
+                    }else{
                         Object object = pluginManager.findPluginObject(eventBusUnit.getMethod().getDeclaringClass().getName());
                         try {
                             eventBusUnit.getMethod().invoke(object,event);

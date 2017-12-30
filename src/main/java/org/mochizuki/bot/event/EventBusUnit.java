@@ -8,6 +8,7 @@ public class EventBusUnit {
     private PluginInfo pluginInfo = null;
     private Method method;
     private EventType eventType;
+    private Object object = null;
 
     public EventBusUnit(Method method,EventType eventType){
         this.method = method;
@@ -26,7 +27,16 @@ public class EventBusUnit {
         this.pluginInfo = pluginInfo;
     }
 
+    public EventBusUnit setObject(Object object) {
+        this.object = object;
+        return this;
+    }
+
     public PluginInfo getPluginInfo() {
         return pluginInfo;
+    }
+
+    public Object getObject() {
+        return object;
     }
 }

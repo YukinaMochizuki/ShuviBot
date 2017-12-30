@@ -8,6 +8,9 @@ import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 public class ServiceManager implements ServiceInterface {
@@ -16,9 +19,9 @@ public class ServiceManager implements ServiceInterface {
     private Logger logger;
     private BasicIO basicIO;
 
-    private ConversationManager conversationManager;
-    private CommandManager commandManager;
-    private PluginManager pluginManager;
+    private static ConversationManager conversationManager;
+    private static CommandManager commandManager;
+    private static PluginManager pluginManager;
 
     private String nowCommunicate;
 
@@ -48,20 +51,65 @@ public class ServiceManager implements ServiceInterface {
 
 //        Instantiate ConversationManager
         logger.info("Instantiate ConversationManager");
-        this.conversationManager = new ConversationManager(this);
+        conversationManager = new ConversationManager(this);
 
 //        Starting load plugin
         logger.info("Instantiate Plugin Manager");
-        this.pluginManager = new PluginManager(this).init();
+        pluginManager = new PluginManager(this).init();
 
 //        Instantiate CommandManager
         logger.info("Instantiate Command Manager ");
         commandManager = new CommandManager(this).init().indexSystemCommand();
 
+//        Register system listener
+        basicIO.registerListener();
+
         return this;
     }
 
+    public void startCommandDrivenInterface(){
+        Scanner scanner = new Scanner(System.in);
+        while (true){
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println();
+            String input = scanner.nextLine();
+            if(input.startsWith("/")){
+                ArrayList<String> parameter = new ArrayList<>();
+                if(input.contains(" ")){
+                    boolean doFirst = true;
+                    int index_start = 0;
+                    int index_end = 0;
+                    while (true){
+                        index_start = input.indexOf(" ",index_start);
 
+                        if(doFirst){
+                            parameter.add(input.substring(1,index_start));
+                            doFirst = false;
+                        }
+
+                        if(index_start == -1)break;
+                        else {
+                            if(input.indexOf(" ",index_start + 1) != -1){
+                                index_end = input.indexOf(" ",index_start + 1);
+                                parameter.add(input.substring(index_start + 1,index_end - 1));
+                                index_start++;
+                            }else {
+                                parameter.add(input.substring(index_start + 1));
+                                index_start++;
+                            }
+                        }
+                    }
+                }else {
+                    parameter.add(input.substring(1));
+                }
+                commandManager.cellCommand(parameter);
+            }
+        }
+    }
 
     public BasicIO getBasicIO(){
         if (this.basicIO == null) {
@@ -78,13 +126,13 @@ public class ServiceManager implements ServiceInterface {
         return telegram;
     }
 
-    public ConversationManager getConversationManager() {
+    public static ConversationManager getConversationManager() {
         return conversationManager;
     }
-    public CommandManager getCommandManager() {
+    public static CommandManager getCommandManager() {
         return commandManager;
     }
-    public PluginManager getPluginManager() {
+    public static PluginManager getPluginManager() {
         return pluginManager;
     }
 }

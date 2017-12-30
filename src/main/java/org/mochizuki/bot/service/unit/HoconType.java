@@ -85,4 +85,7 @@ public class HoconType implements IOType {
         if (output.equals("null"))return default_value;
         else return output;
     }
+    public HoconReader getHoconReader() {
+        return hoconReader;
+    }
 }
