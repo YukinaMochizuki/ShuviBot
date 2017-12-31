@@ -8,6 +8,7 @@ import org.mochizuki.bot.service.PluginManager;
 import org.mochizuki.bot.service.ServiceManager;
 
 import org.mochizuki.bot.unit.DefaultConfig;
+import org.mochizuki.bot.unit.DeveloperModeTelegram;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 import org.telegram.telegrambots.ApiContextInitializer;
@@ -54,14 +55,16 @@ public class Bot {
         if(willSetDefault){
             new DefaultConfig(this.hoconReader).setDefaultConfig();
             logger.info("Default Config has be created, please setting it");
-            return;
+            System.exit(1);
         }
 
 //              Import and setting config
         GlobalSetting.setLoggerSetting(hoconReader.getValue("Bot","Global","Logger-level"));
         GlobalSetting.setBotToken(hoconReader.getValue("Bot","Telegram","BotToken"));
         GlobalSetting.setBotName(hoconReader.getValue("Bot","Telegram","BotName"));
+        GlobalSetting.setChatNumber(hoconReader.getRootNode().getNode("Bot","Telegram","ChatNumber").getLong());
 
+        if(GlobalSetting.getChatNumber() == 0) this.setChatIDMode();
 
         LoggerLevels.setLoggerLevels(logger,GlobalSetting.getLoggerSetting());
         logger.info("Set Logger levels to " + GlobalSetting.getLoggerSetting());
@@ -95,6 +98,28 @@ public class Bot {
 
 //        serviceManager.getCommandManager().cellCommand("stop");
 
+    }
+
+    private void setChatIDMode() {
+        logger.info("Set chat ID mode");
+        logger.info("Instantiate Developer Mode Telegram Bots API...");
+        ApiContextInitializer.init();
+        TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
+        DeveloperModeTelegram developerModeTelegram = new DeveloperModeTelegram(this);
+        try {
+            telegramBotsApi.registerBot(developerModeTelegram);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+        System.err.print("OK");
+
+//        logger.info("Exit for 1 Min later");
+//        try {
+//            TimeUnit.MINUTES.sleep(1);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+        while (true);
     }
 
     protected void startRunning(){

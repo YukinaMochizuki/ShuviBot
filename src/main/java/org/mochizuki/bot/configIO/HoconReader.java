@@ -99,4 +99,8 @@ public class HoconReader {
         this.Path = Path;
         return this;
     }
+
+    public CommentedConfigurationNode getRootNode() {
+        return rootNode;
+    }
 }
