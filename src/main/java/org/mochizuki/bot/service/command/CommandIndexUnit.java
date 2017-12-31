@@ -34,19 +34,6 @@ public class CommandIndexUnit {
                     .setGiveParameterNumber(commandObjects.length);
         }
 
-        for(Object commandObject : commandObjects){
-            for(Object parameterObject : this.parameters){
-                if(!commandObject.equals(parameterObject)){
-                    ArrayList<Class> commandClassArrayList = new ArrayList<>();
-                    for(Object parameterError : commandObjects) commandClassArrayList.add(parameterError.getClass());
-                    Class[] classes = (Class[]) commandClassArrayList.toArray();
-
-                    throw new InvokeParameterException(method,"The parameter type is inconsistent")
-                            .setGiveParameter(classes);
-                }
-            }
-        }
-
         if(this.object == null)throw new NullPointerException();
 
         try {

@@ -77,7 +77,7 @@ public class CommandManager {
         }else {
             for(CommandIndexUnit commandIndexUnit : commandIndexUnitArrayList){
                 if(commandIndexUnit.getName().compareTo(parameterArrayList.get(0)) == 0){
-                    if(parameterArrayList.size() == commandIndexUnit.getParameters().length){
+                    if(parameterArrayList.size() - 1 == commandIndexUnit.getParameters().length){
                         try {
                             parameterArrayList.remove(0);
                             commandIndexUnit.invokeMethod(parameterArrayList.toArray());

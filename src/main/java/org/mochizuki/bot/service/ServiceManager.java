@@ -1,6 +1,7 @@
 package org.mochizuki.bot.service;
 
 import org.mochizuki.bot.Bot;
+import org.mochizuki.bot.communicate.CDI;
 import org.mochizuki.bot.communicate.Communicate;
 import org.mochizuki.bot.communicate.Telegram;
 import org.mochizuki.bot.configIO.HoconReader;
@@ -34,7 +35,47 @@ public class ServiceManager implements ServiceInterface {
 
     public void communicate(String input, Communicate communicate){
         this.nowCommunicate = communicate.nowCommunicate();
-//        TODO
+        logger.info( "Message Input("+ communicate.nowCommunicate() + "): " + input);
+        if(input.startsWith("/")){
+            ArrayList<String> parameter = new ArrayList<>();
+            if(input.contains(" ")){
+                boolean doFirst = true;
+                int index_start = 0;
+                int index_end = 0;
+                while (true){
+                    index_start = input.indexOf(" ",index_start);
+
+                    if(doFirst){
+                        parameter.add(input.substring(1,index_start));
+                        doFirst = false;
+                    }
+
+                    if(index_start == -1)break;
+                    else {
+                        if(input.indexOf(" ",index_start + 1) != -1){
+                            index_end = input.indexOf(" ",index_start + 1);
+                            parameter.add(input.substring(index_start + 1,index_end - 1));
+                            index_start++;
+                        }else {
+                            parameter.add(input.substring(index_start + 1));
+                            index_start++;
+                        }
+                    }
+                }
+            }else {
+                parameter.add(input.substring(1));
+            }
+            commandManager.cellCommand(parameter);
+        }
+    }
+
+    public void displayMessage(Logger logger,String message){
+        if(nowCommunicate.compareTo("Telegram") == 0){
+            telegram.sendMessage(GlobalSetting.getChatNumber(),message);
+            if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger != null) logger.info(message);
+            else if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger == null) this.logger.info("Unknown logger: " + message);
+        }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.info(message);
+        else if(nowCommunicate.compareTo("CDI") == 0 && logger == null)this.logger.info("Unknown logger: " + message);
     }
 
     public ServiceManager init(){
@@ -68,47 +109,10 @@ public class ServiceManager implements ServiceInterface {
     }
 
     public void startCommandDrivenInterface(){
+        CDI cdi = new CDI(this);
+        cdi.start();
+
         Scanner scanner = new Scanner(System.in);
-        while (true){
-            try {
-                TimeUnit.SECONDS.sleep(1);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            System.out.println();
-            String input = scanner.nextLine();
-            if(input.startsWith("/")){
-                ArrayList<String> parameter = new ArrayList<>();
-                if(input.contains(" ")){
-                    boolean doFirst = true;
-                    int index_start = 0;
-                    int index_end = 0;
-                    while (true){
-                        index_start = input.indexOf(" ",index_start);
-
-                        if(doFirst){
-                            parameter.add(input.substring(1,index_start));
-                            doFirst = false;
-                        }
-
-                        if(index_start == -1)break;
-                        else {
-                            if(input.indexOf(" ",index_start + 1) != -1){
-                                index_end = input.indexOf(" ",index_start + 1);
-                                parameter.add(input.substring(index_start + 1,index_end - 1));
-                                index_start++;
-                            }else {
-                                parameter.add(input.substring(index_start + 1));
-                                index_start++;
-                            }
-                        }
-                    }
-                }else {
-                    parameter.add(input.substring(1));
-                }
-                commandManager.cellCommand(parameter);
-            }
-        }
     }
 
     public BasicIO getBasicIO(){

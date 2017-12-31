@@ -28,9 +28,17 @@ public class SystemCommand {
 
     @SystemCommandAnnotation
     public void stop(){
-        logger.info("Bot stopping...");
+        serviceManager.displayMessage(logger,"Bot stopping...");
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotStoppingServerEvent));
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotStoppedServerEvent));
         System.exit(1);
+    }
+
+    @SystemCommandAnnotation
+    public void isRunning(String telegram){
+        if(telegram.compareTo("true") == 0){
+            serviceManager.getTelegram().sendMessage(GlobalSetting.getChatNumber(),"yes");
+        }
+        serviceManager.displayMessage(logger,"Yes");
     }
 }

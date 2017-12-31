@@ -15,6 +15,7 @@ public class DefaultConfig {
         hoconReader.setValue("Bot","Global","Logger-level","INFO");
         hoconReader.setValue("Bot","Telegram","BotToken","123456789:ABCDEFGH");
         hoconReader.setValue("Bot","Telegram","BotName","BotName");
+        hoconReader.getRootNode().getNode("Bot","Telegram","ChatNumber").setValue(0);
 
         saveFile();
     }

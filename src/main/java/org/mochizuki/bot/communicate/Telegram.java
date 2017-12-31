@@ -37,7 +37,7 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
                 // Set variables
                 String message_text = update.getMessage().getText();
                 long chat_id = update.getMessage().getChatId();
-                System.out.println(message_text);
+
                 serviceManager.communicate(message_text,this);
             }
         }
