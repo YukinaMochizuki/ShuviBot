@@ -113,13 +113,12 @@ public class Bot {
         }
         System.err.print("OK");
 
-//        logger.info("Exit for 1 Min later");
-//        try {
-//            TimeUnit.MINUTES.sleep(1);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-        while (true);
+        logger.info("Exit for 1 Min later");
+        try {
+            TimeUnit.MINUTES.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void startRunning(){

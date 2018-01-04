@@ -46,6 +46,7 @@ public class DeveloperModeTelegram extends TelegramLongPollingBot implements Com
             } catch (TelegramApiException e) {
                 e.printStackTrace();
             }
+            System.exit(1);
         }
     }
 
