@@ -12,6 +12,8 @@ public interface PluginManagerInterface {
 
     public PluginInfo findPlugin(String ID);
 
+    ServiceInterface getServiceInterface();
+
     public BasicIO getBasicIO();
 
 }

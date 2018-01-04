@@ -5,6 +5,8 @@ import org.mochizuki.bot.communicate.CDI;
 import org.mochizuki.bot.communicate.Communicate;
 import org.mochizuki.bot.communicate.Telegram;
 import org.mochizuki.bot.configIO.HoconReader;
+import org.mochizuki.bot.event.Event;
+import org.mochizuki.bot.event.EventType;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 
@@ -24,7 +26,7 @@ public class ServiceManager implements ServiceInterface {
     private static CommandManager commandManager;
     private static PluginManager pluginManager;
 
-    private String nowCommunicate;
+    private String nowCommunicate = "CDI";
 
     public ServiceManager(Bot bot){
         this.hoconReader = bot.getStorage();
@@ -33,7 +35,7 @@ public class ServiceManager implements ServiceInterface {
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
     }
 
-    public void communicate(String input, Communicate communicate){
+    public synchronized void communicate(String input, Communicate communicate){
         this.nowCommunicate = communicate.nowCommunicate();
         logger.info( "Message Input("+ communicate.nowCommunicate() + "): " + input);
         if(input.startsWith("/")){
@@ -69,7 +71,8 @@ public class ServiceManager implements ServiceInterface {
         }
     }
 
-    public void displayMessage(Logger logger,String message){
+    @Override
+    public synchronized void displayMessage(Logger logger,String message){
         if(nowCommunicate.compareTo("Telegram") == 0){
             telegram.sendMessage(GlobalSetting.getChatNumber(),message);
             if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger != null) logger.info(message);
@@ -102,6 +105,10 @@ public class ServiceManager implements ServiceInterface {
         logger.info("Instantiate Command Manager ");
         commandManager = new CommandManager(this).init().indexSystemCommand();
 
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotPreInitializationEvent));
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotInitializationEvent));
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotPostInitializationEvent));
+
 //        Register system listener
         basicIO.registerListener();
 
@@ -111,9 +118,7 @@ public class ServiceManager implements ServiceInterface {
     public void startCommandDrivenInterface(){
         CDI cdi = new CDI(this);
         cdi.start();
-
-        Scanner scanner = new Scanner(System.in);
-    }
+        }
 
     public BasicIO getBasicIO(){
         if (this.basicIO == null) {

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class PluginManager implements PluginManagerInterface {
+    private ServiceManager serviceManager;
+    private ServiceInterface serviceInterface;
     private EventManager eventManager = new EventManager(this);
     private ArrayList<PluginInfo> pluginInfoArrayList = new ArrayList<>();
     private Logger logger;
@@ -26,6 +28,8 @@ public class PluginManager implements PluginManagerInterface {
         this.logger = Logger.getLogger("Plugin Manager");
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
 
+        this.serviceInterface = serviceManager;
+        this.serviceManager = serviceManager;
         this.basicIO = serviceManager.getBasicIO();
         this.injectService = new InjectService(serviceManager,this);
     }
@@ -40,10 +44,8 @@ public class PluginManager implements PluginManagerInterface {
         for (PluginInfo pluginInfo : pluginInfoArrayList)pluginInfo.makeObject();
         injectService.startingImport();
         eventManager.settingUpListener();
+
         eventManager.post(new Event().setEventType(EventType.BotConstructionEvent));
-        eventManager.post(new Event().setEventType(EventType.BotPreInitializationEvent));
-        eventManager.post(new Event().setEventType(EventType.BotInitializationEvent));
-        eventManager.post(new Event().setEventType(EventType.BotPostInitializationEvent));
 
         return this;
     }
@@ -95,6 +97,11 @@ public class PluginManager implements PluginManagerInterface {
         }
         return null;
         //        TODO Optional
+    }
+
+    @Override
+    public ServiceInterface getServiceInterface(){
+        return this.serviceInterface;
     }
 
     public InjectService getInjectService() {
