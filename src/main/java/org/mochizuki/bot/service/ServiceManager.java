@@ -56,7 +56,7 @@ public class ServiceManager implements ServiceInterface {
                     else {
                         if(input.indexOf(" ",index_start + 1) != -1){
                             index_end = input.indexOf(" ",index_start + 1);
-                            parameter.add(input.substring(index_start + 1,index_end - 1));
+                            parameter.add(input.substring(index_start + 1,index_end));
                             index_start++;
                         }else {
                             parameter.add(input.substring(index_start + 1));
