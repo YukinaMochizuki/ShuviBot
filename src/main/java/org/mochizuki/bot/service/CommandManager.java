@@ -56,7 +56,7 @@ public class CommandManager {
     }
 
     private static void setCommandManager(CommandManager inputCommandManager){
-        if(commandManager != null)commandManager = inputCommandManager;
+        if(commandManager == null)commandManager = inputCommandManager;
     }
 
     public void cellCommand(ArrayList<String> parameterArrayList){
