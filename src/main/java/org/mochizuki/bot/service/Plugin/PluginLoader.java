@@ -47,9 +47,9 @@ public class PluginLoader {
         Files.walkFileTree(path,pluginFileVisitor);
 
 //              Get  how many plugin need to load, and load it
-        ArrayList<Path> fileVisitorPathgArrayList = pluginFileVisitor.getPathArrayList();
+        ArrayList<Path> fileVisitorPathArrayList = pluginFileVisitor.getPathArrayList();
 
-        for(Path pluginPath : fileVisitorPathgArrayList){
+        for(Path pluginPath : fileVisitorPathArrayList){
             boolean pluginIsSafe = true;
             String className = pluginPath.getFileName().toString().replaceAll(".jar","");
             URL url = pluginPath.toUri().toURL();

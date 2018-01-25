@@ -73,11 +73,14 @@ public class ServiceManager implements ServiceInterface {
 
     @Override
     public synchronized void displayMessage(Logger logger,String message){
+
         if(nowCommunicate.compareTo("Telegram") == 0){
             telegram.sendMessage(GlobalSetting.getChatNumber(),message);
             if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger != null) logger.info(message);
             else if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger == null) this.logger.info("Unknown logger: " + message);
+
         }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.info(message);
+
         else if(nowCommunicate.compareTo("CDI") == 0 && logger == null)this.logger.info("Unknown logger: " + message);
     }
 
@@ -118,7 +121,7 @@ public class ServiceManager implements ServiceInterface {
     public void startCommandDrivenInterface(){
         CDI cdi = new CDI(this);
         cdi.start();
-        }
+    }
 
     public BasicIO getBasicIO(){
         if (this.basicIO == null) {

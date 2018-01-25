@@ -23,7 +23,7 @@ public class EventRegister {
         if (aClass.length >= 2) throw new MethodListenerRegistrationError(method.getName(),method.getDeclaringClass().
                     getAnnotation(Plugin.class).id(),"Listener only can having one parameter");
 
-        if(aClass.length == 0)throw new MethodListenerRegistrationError(method.getName(),method.getDeclaringClass().
+        if(aClass.length == 0) throw new MethodListenerRegistrationError(method.getName(),method.getDeclaringClass().
                 getAnnotation(Plugin.class).id(),"This Method does not having parameter");
 
         Listener listener = method.getAnnotation(Listener.class);

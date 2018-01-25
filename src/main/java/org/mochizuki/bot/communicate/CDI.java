@@ -7,7 +7,7 @@ import java.util.concurrent.TimeUnit;
 
 public class CDI extends Thread implements Communicate{
     private String nowCommunicate = "CDI";
-    ServiceManager serviceManager;
+    private ServiceManager serviceManager;
 
     public CDI(ServiceManager serviceManager){
         this.serviceManager = serviceManager;

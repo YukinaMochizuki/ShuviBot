@@ -33,13 +33,25 @@ public class CommandManager {
 
     public CommandManager init(){
         setCommandManager(this);
-        this.systemCommand = new SystemCommand(serviceManager);
 
         return this;
     }
 
-    public CommandManager addCommandManager(Method method ,Object object){
+    public CommandManager addCommand(Method method ,Object object){
         commandIndexUnitArrayList.add(new CommandIndexUnit(method, object));
+        return commandManager;
+    }
+
+    public CommandManager addCommand(Object object){
+        Class objectClass = object.getClass();
+        Method[] methods = objectClass.getMethods();
+
+        for(Method method : methods){
+            if(method.isAnnotationPresent(SystemCommandAnnotation.class)){
+                commandIndexUnitArrayList.add(new CommandIndexUnit(method,systemCommand));
+            }
+        }
+
         return commandManager;
     }
 
@@ -47,6 +59,7 @@ public class CommandManager {
         this.systemCommand = new SystemCommand(serviceManager);
         Class systemCommandClass = SystemCommand.class;
         Method[] methods = systemCommandClass.getMethods();
+
         for(Method method : methods){
             if(method.isAnnotationPresent(SystemCommandAnnotation.class)){
                 commandIndexUnitArrayList.add(new CommandIndexUnit(method,systemCommand));

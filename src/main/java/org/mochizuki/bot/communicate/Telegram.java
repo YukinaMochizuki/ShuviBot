@@ -8,6 +8,8 @@ import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import java.util.concurrent.TimeUnit;
+
 public class Telegram extends TelegramLongPollingBot implements Communicate {
 
     private boolean allReady = false;
@@ -39,6 +41,13 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
                 long chat_id = update.getMessage().getChatId();
 
                 serviceManager.communicate(message_text,this);
+
+                try {
+                    TimeUnit.SECONDS.sleep(1);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println();
             }
         }
         // We check if the update has a message and the message has text

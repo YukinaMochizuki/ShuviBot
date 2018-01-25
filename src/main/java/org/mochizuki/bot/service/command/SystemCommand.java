@@ -37,8 +37,7 @@ public class SystemCommand {
     @SystemCommandAnnotation
     public void isRunning(String telegram){
         if(telegram.compareTo("true") == 0){
-            serviceManager.getTelegram().sendMessage(GlobalSetting.getChatNumber(),"yes");
+            serviceManager.displayMessage(logger,"Yes");
         }
-        serviceManager.displayMessage(logger,"Yes");
     }
 }
