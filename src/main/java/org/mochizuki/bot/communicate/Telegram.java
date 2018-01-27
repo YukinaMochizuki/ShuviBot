@@ -11,7 +11,6 @@ import org.telegram.telegrambots.exceptions.TelegramApiException;
 import java.util.concurrent.TimeUnit;
 
 public class Telegram extends TelegramLongPollingBot implements Communicate {
-
     private boolean allReady = false;
     private Bot bot;
     private ServiceManager serviceManager;

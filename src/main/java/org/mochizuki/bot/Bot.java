@@ -96,6 +96,7 @@ public class Bot {
 //              Set  Telegram listener ready
         telegram.setAllReady(true);
 
+
 //        serviceManager.getCommandManager().cellCommand("stop");
 
     }

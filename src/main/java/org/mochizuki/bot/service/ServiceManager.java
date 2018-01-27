@@ -68,7 +68,7 @@ public class ServiceManager implements ServiceInterface {
                 parameter.add(input.substring(1));
             }
             commandManager.cellCommand(parameter);
-        }
+        }else conversationManager.communicate(input);
     }
 
     @Override
@@ -82,6 +82,20 @@ public class ServiceManager implements ServiceInterface {
         }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.info(message);
 
         else if(nowCommunicate.compareTo("CDI") == 0 && logger == null)this.logger.info("Unknown logger: " + message);
+    }
+
+    @Override
+    public synchronized void displayWarnMessage(Logger logger,String message){
+
+        if(nowCommunicate.compareTo("Telegram") == 0){
+            telegram.sendMessage(GlobalSetting.getChatNumber(),"Warning : ".concat(message));
+
+            if(logger != null) logger.info(message);
+            else this.logger.info("Unknown logger: " + message);
+
+        }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.warning(message);
+
+        else if(nowCommunicate.compareTo("CDI") == 0 && logger == null)this.logger.warning("Unknown logger: " + message);
     }
 
     public ServiceManager init(){
@@ -104,16 +118,19 @@ public class ServiceManager implements ServiceInterface {
         logger.info("Instantiate Plugin Manager");
         pluginManager = new PluginManager(this).init();
 
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotConstructionEvent));
+
 //        Instantiate CommandManager
         logger.info("Instantiate Command Manager ");
         commandManager = new CommandManager(this).init().indexSystemCommand();
 
+//        Register system listener
+        basicIO.registerListener();
+
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotPreInitializationEvent));
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotInitializationEvent));
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotPostInitializationEvent));
-
-//        Register system listener
-        basicIO.registerListener();
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotLoadCompleteEvent));
 
         return this;
     }

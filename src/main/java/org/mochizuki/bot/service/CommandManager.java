@@ -104,7 +104,13 @@ public class CommandManager {
                 }
             }
         }
-        logger.warning("Command " + parameterArrayList.get(0) + " not find");
+
+        serviceManager.displayWarnMessage(logger,"Command " + parameterArrayList.get(0) + " not find");
+        serviceManager.displayWarnMessage(logger,"Please confirm whether a problem with the command parameters");
+    }
+
+    public ArrayList<CommandIndexUnit> getCommandIndexUnitArrayList() {
+        return commandIndexUnitArrayList;
     }
 
     @Deprecated
@@ -151,7 +157,8 @@ public class CommandManager {
                 }
             }
         }
-        logger.info("Command " + command + " not find");
+        serviceManager.displayWarnMessage(logger,"Command " + command + " not find");
+        serviceManager.displayWarnMessage(logger,"Please confirm whether a problem with the command parameters");
     }
 
 
