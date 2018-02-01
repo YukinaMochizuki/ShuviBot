@@ -109,20 +109,22 @@ public class ServiceManager implements ServiceInterface {
                 hoconReader.getValue("Bot","ServiceManager","BasicIO","type").equals("Hocon"))
             basicIO.setHoconType();
 
+//        Init EventManager
+        pluginManager = new PluginManager(this);
 
 //        Instantiate ConversationManager
         logger.info("Instantiate ConversationManager");
         conversationManager = new ConversationManager(this);
 
-//        Starting load plugin
-        logger.info("Instantiate Plugin Manager");
-        pluginManager = new PluginManager(this).init();
-
-        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotConstructionEvent));
-
 //        Instantiate CommandManager
         logger.info("Instantiate Command Manager ");
         commandManager = new CommandManager(this).init().indexSystemCommand();
+
+//        Starting load plugin
+        logger.info("Instantiate Plugin Manager");
+        pluginManager.init();
+
+        pluginManager.getEventManager().post(new Event().setEventType(EventType.BotConstructionEvent));
 
 //        Register system listener
         basicIO.registerListener();
