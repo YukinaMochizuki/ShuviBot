@@ -38,14 +38,8 @@ public class BasicIO {
 
     public void registerListener(){
         try {
-            ServiceManager.getPluginManager().getEventManager().registerSystemListener(EventType.BotStoppingServerEvent,
+            ServiceManager.getPluginManager().getEventManager().registerListener(EventType.BotStoppingServerEvent,
                     BasicIO.class.getMethod("saveData", Event.class), this);
-
-
-
-
-
-
         } catch (NoSuchMethodException e) {
             e.printStackTrace();
         }

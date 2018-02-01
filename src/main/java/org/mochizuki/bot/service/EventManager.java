@@ -15,12 +15,10 @@ public class EventManager {
 
     private EventRegister eventRegister = new EventRegister();
     private PluginManager pluginManager;
-    private ArrayList<PluginInfo> pluginInfoArrayList;
     private ArrayList<EventBusUnit> eventBusUnitArrayList;
 
     EventManager(PluginManager pluginManager){
         this.pluginManager = pluginManager;
-        this.pluginInfoArrayList = pluginManager.getPluginInfoArrayList();
     }
 
     public void registerListener(Method method){
@@ -41,7 +39,7 @@ public class EventManager {
 //        TODO Error massage
     }
 
-    public void registerSystemListener(EventType eventType,Method method,Object object){
+    public void registerListener(EventType eventType, Method method, Object object){
         try {
             eventRegister.registerSystemListener(eventType, method, object);
         } catch (MethodListenerRegistrationError methodListenerRegistrationError) {
@@ -90,6 +88,5 @@ public class EventManager {
                 }
             }
         }
-
     }
 }

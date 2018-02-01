@@ -1,8 +1,5 @@
 package org.mochizuki.bot.service;
 
-import org.mochizuki.bot.Bot;
-import org.mochizuki.bot.event.Event;
-import org.mochizuki.bot.event.EventType;
 import org.mochizuki.bot.service.Plugin.PluginInfo;
 import org.mochizuki.bot.service.Plugin.PluginLoader;
 import org.mochizuki.bot.unit.GlobalSetting;
@@ -21,32 +18,27 @@ public class PluginManager implements PluginManagerInterface {
     private BasicIO basicIO;
     private InjectService injectService;
 
-    public PluginManager(){
-    }
 
-    public PluginManager(ServiceManager serviceManager){
+    PluginManager(ServiceManager serviceManager){
         this.logger = Logger.getLogger("Plugin Manager");
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
 
         this.serviceInterface = serviceManager;
         this.serviceManager = serviceManager;
         this.basicIO = serviceManager.getBasicIO();
-        this.injectService = new InjectService(serviceManager,this);
     }
 
-    public PluginManager init(){
+    public void init(){
+        this.injectService = new InjectService(serviceManager,this);
         PluginLoader pluginLoader = new PluginLoader(this).init();
 
         logger.info(" Loading plugin is complete");
 
-
-//        ============Debug==============
         for (PluginInfo pluginInfo : pluginInfoArrayList)pluginInfo.makeObject();
-        injectService.startingImport();
         eventManager.settingUpListener();
-
-        return this;
+        injectService.startingImport();
     }
+
 
     public void registrationPlugin(Class<?> aClass){
         pluginInfoArrayList.add(new PluginInfo(aClass));

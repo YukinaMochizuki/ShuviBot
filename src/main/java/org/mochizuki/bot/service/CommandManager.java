@@ -48,10 +48,9 @@ public class CommandManager {
 
         for(Method method : methods){
             if(method.isAnnotationPresent(SystemCommandAnnotation.class)){
-                commandIndexUnitArrayList.add(new CommandIndexUnit(method,systemCommand));
+                commandIndexUnitArrayList.add(new CommandIndexUnit(method,object));
             }
         }
-
         return commandManager;
     }
 

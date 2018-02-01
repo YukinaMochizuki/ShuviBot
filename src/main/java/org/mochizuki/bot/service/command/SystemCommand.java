@@ -24,9 +24,18 @@ public class SystemCommand {
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
 
         this.serviceManager = serviceManager;
-        this.pluginManager = serviceManager.getPluginManager();
+        this.pluginManager = ServiceManager.getPluginManager();
         this.basicIO = serviceManager.getBasicIO();
+
+//        try {
+//            ServiceManager.getPluginManager().getEventManager().registerListener(EventType.BotLoadCompleteEvent,
+//                    BasicIO.class.getMethod("saveData", Event.class), this);
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        }
     }
+
+
 
     @SystemCommandAnnotation
     public void stop(){
