@@ -27,7 +27,7 @@ public class InjectService {
 
     InjectService(ServiceManager serviceManager,PluginManager pluginManager) {
         this.basicIO = serviceManager.getBasicIO();
-        this.conversationManager = serviceManager.getConversationManager();
+        this.conversationManager = ServiceManager.getConversationManager();
         this.telegram = serviceManager.getTelegram();
         this.pluginManagerInterface = pluginManager;
         this.pluginManager = pluginManager;
@@ -94,14 +94,14 @@ public class InjectService {
             if(method.isAnnotationPresent(ConfigDir.class)){
                 if(method.getAnnotation(ConfigDir.class).sharedRoot()){
                     injectBusUnitArrayList.add(new
-                            InjectBusUnit(method,Paths.get(".",method.getDeclaringClass().getAnnotation(Plugin.class).id())));
+                            InjectBusUnit(method,Paths.get(".","plugin",method.getDeclaringClass().getAnnotation(Plugin.class).id())));
                 }else {
                     injectBusUnitArrayList.add(new
-                            InjectBusUnit(method,Paths.get(".",method.getDeclaringClass().getAnnotation(Plugin.class).id(),
+                            InjectBusUnit(method,Paths.get(".","plugin",method.getDeclaringClass().getAnnotation(Plugin.class).id(),
                             method.getDeclaringClass().getAnnotation(Plugin.class).id() + ".conf")));
                 }
             }else injectBusUnitArrayList.add(new
-                    InjectBusUnit(method,Paths.get(".",method.getDeclaringClass().getAnnotation(Plugin.class).id(),
+                    InjectBusUnit(method,Paths.get(".","plugin",method.getDeclaringClass().getAnnotation(Plugin.class).id(),
                     method.getDeclaringClass().getAnnotation(Plugin.class).id() + ".conf")));
         }
 
@@ -144,25 +144,18 @@ public class InjectService {
             if(field.isAnnotationPresent(ConfigDir.class)){
                 if(field.getAnnotation(ConfigDir.class).sharedRoot()){
                     injectBusUnitArrayList.add(new
-                            InjectBusUnit(field,Paths.get(".",field.getDeclaringClass().getAnnotation(Plugin.class).id())));
+                            InjectBusUnit(field,Paths.get(".","plugin",field.getDeclaringClass().getAnnotation(Plugin.class).id())));
                 }else {
                     injectBusUnitArrayList.add(new
-                            InjectBusUnit(field,Paths.get(".",field.getDeclaringClass().getAnnotation(Plugin.class).id(),
+                            InjectBusUnit(field,Paths.get(".","plugin",field.getDeclaringClass().getAnnotation(Plugin.class).id(),
                             field.getDeclaringClass().getAnnotation(Plugin.class).id() + ".conf")));
                 }
             }else injectBusUnitArrayList.add(new
-                    InjectBusUnit(field,Paths.get(".",field.getDeclaringClass().getAnnotation(Plugin.class).id(),
+                    InjectBusUnit(field,Paths.get(".","plugin",field.getDeclaringClass().getAnnotation(Plugin.class).id(),
                     field.getDeclaringClass().getAnnotation(Plugin.class).id() + ".conf")));
         }
 
 //            TODO  Use passing the target class to implement Dependency Injection
 //            TODO Move to Inject class
-    }
-
-
-    public void importInjection(){
-        for (InjectBusUnit injectBusUnit : injectBusUnitArrayList){
-
-        }
     }
 }
