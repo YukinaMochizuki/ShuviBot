@@ -7,6 +7,7 @@ import org.mochizuki.bot.communicate.Telegram;
 import org.mochizuki.bot.configIO.HoconReader;
 import org.mochizuki.bot.event.Event;
 import org.mochizuki.bot.event.EventType;
+import org.mochizuki.bot.service.unit.ServiceContainer;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
 
@@ -25,6 +26,8 @@ public class ServiceManager implements ServiceInterface {
     private static ConversationManager conversationManager;
     private static CommandManager commandManager;
     private static PluginManager pluginManager;
+
+    private ArrayList<ServiceContainer> serviceContainerArrayList = new ArrayList<>();
 
     private String nowCommunicate = "CDI";
 
@@ -148,6 +151,19 @@ public class ServiceManager implements ServiceInterface {
             throw new NullPointerException();
         }
         return this.basicIO;
+    }
+
+    public void setProvider(Object plugin, Class serviceClass, Object provider){
+        serviceContainerArrayList.add(new ServiceContainer(plugin,serviceClass,provider));
+    }
+
+    public ServiceContainer provide(Class serviceClass){
+        for(ServiceContainer serviceContainer: serviceContainerArrayList){
+            if(serviceContainer.getServiceClass().getName().compareTo(serviceClass.getName()) == 0){
+                return serviceContainer;
+            }
+        }
+        return null;
     }
 
     public String getNowCommunicate(){
