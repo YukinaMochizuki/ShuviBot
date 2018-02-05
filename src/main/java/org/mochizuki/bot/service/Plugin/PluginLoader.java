@@ -39,10 +39,61 @@ public class PluginLoader {
     }
 
     public PluginLoader init(){
+        try {
+            Path path = Paths.get("plugin");
+            PluginFileVisitor pluginFileVisitor = new PluginFileVisitor();
+            Files.walkFileTree(path,pluginFileVisitor);
+            ArrayList<Path> fileVisitorPathArrayList = pluginFileVisitor.getPathArrayList();
+
+            ClassPath classPath = ClassPath.from(GlobalSetting.getUrlClassLoader());
+            for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClasses()) {
+                for (Path pluginPath : fileVisitorPathArrayList) {
+                    String className = pluginPath.getFileName().toString().replaceAll(".jar", "");
+                    if (classInfo.getName().endsWith(className)) {
+                        logger.info("Debug:" + classInfo.getName());
+                        Class<?> aClass = classInfo.load();
+                        if (aClass.isAnnotationPresent(Plugin.class)) {
+                            logger.info("Debug : Class have Annotation");
+                            pluginManager.registrationPlugin(aClass);
+
+                            Method[] aClassMethods = aClass.getMethods();
+                            for (Method aClassMethod : aClassMethods) {
+                                if (aClassMethod.isAnnotationPresent(Listener.class)) {
+                                    logger.info("Debug : Methods " + aClassMethod.getName() + " have Listener Annotation");
+                                    logger.info("Debug : " + aClassMethod.getDeclaringClass().getSimpleName());
+                                    aClassMethod.setAccessible(true);
+                                    eventManager.registerListener(aClassMethod);
+                                }
+                                if (aClassMethod.isAnnotationPresent(Inject.class)) {
+                                    logger.info("Debug  : Methods " + aClassMethod.getName() + " have Inject Annotation");
+                                    aClassMethod.setAccessible(true);
+                                    injectService.Inject(aClassMethod);
+                                }
+                            }
+                            Field[] aClassFields = aClass.getDeclaredFields();
+                            for (Field aClassField : aClassFields) {
+                                if (aClassField.isAnnotationPresent(Inject.class)) {
+                                    logger.info("Debug : Field " + aClassField.getName() + " have Inject Annotation");
+                                    aClassField.setAccessible(true);
+                                    injectService.Inject(aClassField);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return this;
+    }
+
+    @Deprecated
+    public PluginLoader init_(){
 
 //        logger.info("Loading Plugin config");
         try {
-        Path path = Paths.get(".","plugin");
+        Path path = Paths.get("plugin");
         PluginFileVisitor pluginFileVisitor = new PluginFileVisitor();
         Files.walkFileTree(path,pluginFileVisitor);
 
@@ -54,8 +105,6 @@ public class PluginLoader {
             String className = pluginPath.getFileName().toString().replaceAll(".jar","");
             URL url = pluginPath.toUri().toURL();
             URLClassLoader pluginUrlClassLoader = new URLClassLoader(new URL[] {url});
-
-            Class<?> pluginClass = null;
 
             /*
             try {
@@ -70,7 +119,7 @@ public class PluginLoader {
             }
                     */
 
-            ClassPath classPath = ClassPath.from(pluginUrlClassLoader);
+            ClassPath classPath = ClassPath.from(GlobalSetting.getUrlClassLoader());
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClasses()) {
                 if (classInfo.getName().endsWith(className)) {
                     logger.info("Debug:" + classInfo.getName());
@@ -105,8 +154,6 @@ public class PluginLoader {
                 }
             }
         }
-
-
         }catch(ArrayIndexOutOfBoundsException e) {
             System.out.println("沒有指定類別載入路徑與名稱");
         }

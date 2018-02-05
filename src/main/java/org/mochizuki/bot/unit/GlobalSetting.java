@@ -1,5 +1,7 @@
 package org.mochizuki.bot.unit;
 
+import java.net.URLClassLoader;
+
 public final class GlobalSetting {
     private static String loggerLevel;
 
@@ -7,6 +9,11 @@ public final class GlobalSetting {
     private static String botName;
     private static String botToken;
     private static long ChatNumber;
+    private static URLClassLoader urlClassLoader;
+
+    public static void setUrlClassLoader(URLClassLoader urlClassLoader) {
+        GlobalSetting.urlClassLoader = urlClassLoader;
+    }
 
     public static void setLoggerSetting(String setLoggerLevel){
         loggerLevel = setLoggerLevel;
@@ -22,6 +29,10 @@ public final class GlobalSetting {
 
     public static void setChatNumber(long chatNumber) {
         ChatNumber = chatNumber;
+    }
+
+    public static URLClassLoader getUrlClassLoader() {
+        return urlClassLoader;
     }
 
     public static long getChatNumber() {

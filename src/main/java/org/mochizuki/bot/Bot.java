@@ -16,6 +16,7 @@ import org.telegram.telegrambots.TelegramBotsApi;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
 import java.io.IOException;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,7 +37,7 @@ public class Bot {
         this.logger = Logger.getLogger("Bot Main");
     }
 
-    protected void onInitialization() throws IOException {
+    protected void onInitialization(URLClassLoader pluginURLClassLoader) throws IOException {
 //              Instantiate Config Storage
         logger.info("Instantiate Config Storage");
         boolean willSetDefault = false;
@@ -59,6 +60,7 @@ public class Bot {
         }
 
 //              Import and setting config
+        GlobalSetting.setUrlClassLoader(pluginURLClassLoader);
         GlobalSetting.setLoggerSetting(hoconReader.getValue("Bot","Global","Logger-level"));
         GlobalSetting.setBotToken(hoconReader.getValue("Bot","Telegram","BotToken"));
         GlobalSetting.setBotName(hoconReader.getValue("Bot","Telegram","BotName"));
