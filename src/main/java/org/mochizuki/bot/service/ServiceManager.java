@@ -7,6 +7,7 @@ import org.mochizuki.bot.communicate.Telegram;
 import org.mochizuki.bot.configIO.HoconReader;
 import org.mochizuki.bot.event.Event;
 import org.mochizuki.bot.event.EventType;
+import org.mochizuki.bot.service.conversation.ConversationMode;
 import org.mochizuki.bot.service.unit.ServiceContainer;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
@@ -41,6 +42,17 @@ public class ServiceManager implements ServiceInterface {
     public synchronized void communicate(String input, Communicate communicate){
         this.nowCommunicate = communicate.nowCommunicate();
         logger.info( "Message Input("+ communicate.nowCommunicate() + "): " + input);
+        switch (conversationManager.getConversationMode()){
+            case TalkMode:
+                this.globalCommand(input, communicate);
+                break;
+            case SingleMode:
+                conversationManager.communicate(input);
+                break;
+        }
+    }
+
+    public synchronized void globalCommand(String input, Communicate communicate){
         if(input.startsWith("/")){
             ArrayList<String> parameter = new ArrayList<>();
             if(input.contains(" ")){

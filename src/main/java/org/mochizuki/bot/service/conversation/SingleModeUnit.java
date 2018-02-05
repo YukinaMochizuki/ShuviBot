@@ -16,11 +16,13 @@ public class SingleModeUnit {
         this.pluginObject = pluginObject;
         this.singleModeInterface = singleModeInterface;
 
-        pluginInfo = ServiceManager.getPluginManager().findPlugin(pluginObject);
-        if (pluginInfo != null){
-            this.Id = pluginInfo.getId();
-            ready = true;
-        }
+        if(singleModeInterface.getID() != null) {
+            pluginInfo = ServiceManager.getPluginManager().findPlugin(pluginObject);
+            if (pluginInfo != null) {
+                this.Id = pluginInfo.getId();
+                ready = true;
+            }
+        }else this.Id = singleModeInterface.getID();
     }
 
     public void singleTalk(String inputMessage){

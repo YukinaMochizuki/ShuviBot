@@ -53,6 +53,10 @@ public class ConversationManager {
         this.singleMode.singleModeRegister(plugin, singleModeInterface);
     }
 
+    public ConversationMode getConversationMode() {
+        return conversationMode;
+    }
+
     public void setAllReady(boolean allReady) {
         this.allReady = allReady;
     }
