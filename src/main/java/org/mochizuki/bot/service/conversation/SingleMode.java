@@ -1,13 +1,17 @@
 package org.mochizuki.bot.service.conversation;
 
+import org.mochizuki.bot.service.ConversationManager;
+
 import java.util.ArrayList;
 
 public class SingleMode {
     private SingleModeUnit singleModeUnit;
     private ArrayList<SingleModeUnit> singleModeUnitArrayList = new ArrayList<>();
 
-    public SingleMode(){
+    private ConversationManager conversationManager;
 
+    public SingleMode(ConversationManager ConversationManager){
+        this.conversationManager = ConversationManager;
     }
 
     public boolean targetSingleMode(String ID){
@@ -23,6 +27,11 @@ public class SingleMode {
     public void singleTalk(String inputMessage){
         MessagePacket messagePacket = new MessagePacket();
         messagePacket.setOriginalMessage(inputMessage);
+        if(inputMessage.compareTo("/exit") == 0){
+            conversationManager.leaveSingleMode();
+            return;
+        }
+
         if(inputMessage.startsWith("/")){
             messagePacket.setCommand(true);
             ArrayList<String> parameter = new ArrayList<>();

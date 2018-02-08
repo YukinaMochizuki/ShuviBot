@@ -19,14 +19,14 @@ public class ConversationManager {
     private TalkMode talkMode;
 
 
-    public ConversationManager(ServiceManager serviceManager){
+    ConversationManager(ServiceManager serviceManager){
         this.logger = Logger.getLogger("Conversation Manager");
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
         this.serviceManager = serviceManager;
         this.basicIO = serviceManager.getBasicIO();
 
         this.modeManager = new ModeManager();
-        this.singleMode = new SingleMode();
+        this.singleMode = new SingleMode(this);
         this.talkMode = new TalkMode();
     }
 
