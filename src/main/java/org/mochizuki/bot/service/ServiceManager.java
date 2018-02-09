@@ -11,6 +11,7 @@ import org.mochizuki.bot.service.conversation.ConversationMode;
 import org.mochizuki.bot.service.unit.ServiceContainer;
 import org.mochizuki.bot.unit.GlobalSetting;
 import org.mochizuki.bot.unit.LoggerLevels;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -91,6 +92,7 @@ public class ServiceManager implements ServiceInterface {
 
         if(nowCommunicate.compareTo("Telegram") == 0){
             telegram.sendMessage(GlobalSetting.getChatNumber(),message);
+
             if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger != null) logger.info(message);
             else if(GlobalSetting.getLoggerSetting().compareTo("FINE") == 0 && logger == null) this.logger.info("Unknown logger: " + message);
 
@@ -111,6 +113,23 @@ public class ServiceManager implements ServiceInterface {
         }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.warning(message);
 
         else if(nowCommunicate.compareTo("CDI") == 0 && logger == null)this.logger.warning("Unknown logger: " + message);
+    }
+
+    public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons){
+        KeyboardRow keyboardRow = new KeyboardRow();
+        for(String string:keyboardButtons)keyboardRow.add(string);
+
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,null);
+    }
+
+    public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1){
+        KeyboardRow keyboardRow = new KeyboardRow();
+        for(String string:keyboardButtons)keyboardRow.add(string);
+
+        KeyboardRow keyboardRow1 = new KeyboardRow();
+        for(String string:keyboardButtons1)keyboardRow.add(string);
+
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1);
     }
 
     public ServiceManager init(){

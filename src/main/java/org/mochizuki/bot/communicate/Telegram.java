@@ -10,6 +10,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -23,6 +24,27 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
         this.bot = bot;
     }
 
+    public void setReplyMarkup(long chat_id,@NotNull KeyboardRow keyboardButtons, KeyboardRow keyboardButtons1){
+        List<KeyboardRow> keyboardRowList = new ArrayList<>();
+        keyboardRowList.add(keyboardButtons);
+        if(keyboardButtons1 != null)keyboardRowList.add(keyboardButtons1);
+
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        keyboardMarkup.setKeyboard(keyboardRowList).setResizeKeyboard(true);
+
+        SendMessage sendMessage = new SendMessage()
+                .setChatId(chat_id)
+                .setText("Update Keyboard")
+                .setReplyMarkup(keyboardMarkup);
+
+        try {
+            // Send the message
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void sendMessage(long chat_id,String message_text){
         SendMessage message = new SendMessage()
                 .setChatId(chat_id)
@@ -33,42 +55,42 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
             e.printStackTrace();
         }
 
-        /*
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chat_id);
-        sendMessage.setText("Custom message text");
 
-        // Create ReplyKeyboardMarkup object
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        // Create the keyboard (list of keyboard rows)
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        // Create a keyboard row
-        KeyboardRow row = new KeyboardRow();
-        // Set each button, you can also use KeyboardButton objects if you need something else than text
-        row.add("Button 1");
-        row.add("Button 2");
-        row.add("Button 3");
-        // Add the first row to the keyboard
-        keyboard.add(row);
-        // Create another keyboard row
-        row = new KeyboardRow();
-        // Set each button for the second line
-        row.add("Row 2 Button 1");
-        row.add("Row 2 Button 2");
-        row.add("Row 2 Button 3");
-        // Add the second row to the keyboard
-        keyboard.add(row);
-        // Set the keyboard to the markup
-        keyboardMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
-        // Add it to the message
-        sendMessage.setReplyMarkup(keyboardMarkup);
-
-        try {
-            // Send the message
-            execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }*/
+//        SendMessage sendMessage = new SendMessage();
+//        sendMessage.setChatId(chat_id);
+//        sendMessage.setText("Custom message text");
+//
+//        // Create ReplyKeyboardMarkup object
+//        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+//        // Create the keyboard (list of keyboard rows)
+//        List<KeyboardRow> keyboard = new ArrayList<>();
+//        // Create a keyboard row
+//        KeyboardRow row = new KeyboardRow();
+//        // Set each button, you can also use KeyboardButton objects if you need something else than text
+//        row.add("Button 1");
+//        row.add("Button 2");
+//        row.add("Button 3");
+//        // Add the first row to the keyboard
+//        keyboard.add(row);
+//        // Create another keyboard row
+//        row = new KeyboardRow();
+//        // Set each button for the second line
+//        row.add("Row 2 Button 1");
+//        row.add("Row 2 Button 2");
+//        row.add("Row 2 Button 3");
+//        // Add the second row to the keyboard
+//        keyboard.add(row);
+//        // Set the keyboard to the markup
+//        keyboardMarkup.setKeyboard(keyboard).setResizeKeyboard(true);
+//        // Add it to the message
+//        sendMessage.setReplyMarkup(keyboardMarkup);
+//
+//        try {
+//            // Send the message
+//            execute(sendMessage);
+//        } catch (TelegramApiException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
