@@ -46,6 +46,7 @@ public class ConversationManager {
     }
 
     public void leaveSingleMode(){
+        serviceManager.restoreReplyMarkup();
         conversationMode = ConversationMode.TalkMode;
     }
 

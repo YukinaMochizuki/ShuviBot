@@ -116,20 +116,32 @@ public class ServiceManager implements ServiceInterface {
     }
 
     public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons){
-        KeyboardRow keyboardRow = new KeyboardRow();
-        for(String string:keyboardButtons)keyboardRow.add(string);
+        if(conversationManager.getConversationMode() == ConversationMode.SingleMode) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+            for (String string : keyboardButtons) keyboardRow.add(string);
 
-        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,null);
+            telegram.setReplyMarkup(GlobalSetting.getChatNumber(), keyboardRow, null);
+        }
     }
 
     public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1){
+        if(conversationManager.getConversationMode() == ConversationMode.SingleMode) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+            for (String string : keyboardButtons) keyboardRow.add(string);
+
+            KeyboardRow keyboardRow1 = new KeyboardRow();
+            for (String string : keyboardButtons1) keyboardRow.add(string);
+
+            telegram.setReplyMarkup(GlobalSetting.getChatNumber(), keyboardRow, keyboardRow1);
+        }
+    }
+
+    public void restoreReplyMarkup(){
         KeyboardRow keyboardRow = new KeyboardRow();
-        for(String string:keyboardButtons)keyboardRow.add(string);
+        keyboardRow.add("/help");
+        keyboardRow.add("/pluginlist");
 
-        KeyboardRow keyboardRow1 = new KeyboardRow();
-        for(String string:keyboardButtons1)keyboardRow.add(string);
-
-        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1);
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(), keyboardRow, null);
     }
 
     public ServiceManager init(){
