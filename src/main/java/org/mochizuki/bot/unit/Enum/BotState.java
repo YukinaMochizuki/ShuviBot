@@ -1,9 +1,0 @@
-package org.mochizuki.bot.unit.Enum;
-
-@Deprecated
-public enum BotState {
-
-    CONSTRUCTION,PRE_INITIALIZATION,INITIALIZATION,POST_INITIALIZATION,
-
-    LOAD_COMPLETE,SERVER_STOPPING,SERVER_STOPPED,
-}
