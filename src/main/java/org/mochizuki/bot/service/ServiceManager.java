@@ -119,7 +119,20 @@ public class ServiceManager implements ServiceInterface {
         KeyboardRow keyboardRow = new KeyboardRow();
         for(String string:keyboardButtons)keyboardRow.add(string);
 
-        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,null);
+        KeyboardRow keyboardRow1 = new KeyboardRow();
+
+        switch (conversationManager.getConversationMode()){
+            case TalkMode:
+                keyboardRow1.add("/help");
+                keyboardRow1.add("/pluginlist");
+                keyboardRow1.add("/stop");
+                break;
+            case SingleMode:
+                keyboardRow1.add("/exit");
+                break;
+        }
+
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1,null);
     }
 
     public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1){
@@ -129,7 +142,36 @@ public class ServiceManager implements ServiceInterface {
         KeyboardRow keyboardRow1 = new KeyboardRow();
         for(String string:keyboardButtons1)keyboardRow.add(string);
 
-        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1);
+        KeyboardRow keyboardRow2 = new KeyboardRow();
+
+        switch (conversationManager.getConversationMode()){
+            case TalkMode:
+                keyboardRow2.add("/help");
+                keyboardRow2.add("/pluginlist");
+                keyboardRow2.add("/stop");
+                break;
+            case SingleMode:
+                keyboardRow2.add("/exit");
+                break;
+        }
+
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1,keyboardRow2);
+    }
+
+    public void restartReplyMarkup(){
+        KeyboardRow keyboardRow = new KeyboardRow();
+
+        switch (conversationManager.getConversationMode()){
+            case TalkMode:
+                keyboardRow.add("/help");
+                keyboardRow.add("/pluginlist");
+                keyboardRow.add("/stop");
+                break;
+            case SingleMode:
+                keyboardRow.add("/exit");
+                break;
+        }
+        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,null,null);
     }
 
     public ServiceManager init(){
@@ -168,6 +210,7 @@ public class ServiceManager implements ServiceInterface {
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotPostInitializationEvent));
         pluginManager.getEventManager().post(new Event().setEventType(EventType.BotLoadCompleteEvent));
 
+        this.restartReplyMarkup();
         return this;
     }
 

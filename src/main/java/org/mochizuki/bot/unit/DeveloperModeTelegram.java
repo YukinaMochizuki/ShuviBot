@@ -34,7 +34,7 @@ public class DeveloperModeTelegram extends TelegramLongPollingBot implements Com
             String message_text = update.getMessage().getText();
             Long chat_id = update.getMessage().getChatId();
 
-            System.out.print(chat_id);
+            System.out.println(chat_id);
             bot.getStorage().getRootNode().getNode("Bot","Telegram","ChatNumber").setValue(chat_id);
             bot.getStorage().serveFile();
 

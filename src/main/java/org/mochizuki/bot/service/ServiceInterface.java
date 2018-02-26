@@ -11,6 +11,7 @@ public interface ServiceInterface {
     void displayWarnMessage(Logger logger,String message);
     void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons);
     void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1);
+    void restartReplyMarkup();
     void setProvider(Object plugin, Class serviceClass, Object provider);
     ServiceContainer provide(Class serviceClass);
 }
