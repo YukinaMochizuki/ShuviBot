@@ -16,7 +16,7 @@ public class SingleModeUnit {
         this.pluginObject = pluginObject;
         this.singleModeInterface = singleModeInterface;
 
-        if(singleModeInterface.getID() != null) {
+        if(singleModeInterface.getID() == null) {
             pluginInfo = ServiceManager.getPluginManager().findPlugin(pluginObject);
             if (pluginInfo != null) {
                 this.Id = pluginInfo.getId();
