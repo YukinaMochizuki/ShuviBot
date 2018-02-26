@@ -135,28 +135,28 @@ public class ServiceManager implements ServiceInterface {
         telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1,null);
     }
 
-    public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1){
-        KeyboardRow keyboardRow = new KeyboardRow();
-        for(String string:keyboardButtons)keyboardRow.add(string);
-
-        KeyboardRow keyboardRow1 = new KeyboardRow();
-        for(String string:keyboardButtons1)keyboardRow.add(string);
-
-        KeyboardRow keyboardRow2 = new KeyboardRow();
-
-        switch (conversationManager.getConversationMode()){
-            case TalkMode:
-                keyboardRow2.add("/help");
-                keyboardRow2.add("/pluginlist");
-                keyboardRow2.add("/stop");
-                break;
-            case SingleMode:
-                keyboardRow2.add("/exit");
-                break;
-        }
-
-        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1,keyboardRow2);
-    }
+//    public void setReplyMarkup(@NotNull ArrayList<String> keyboardButtons,@NotNull ArrayList<String> keyboardButtons1){
+//        KeyboardRow keyboardRow = new KeyboardRow();
+//        for(String string:keyboardButtons)keyboardRow.add(string);
+//
+//        KeyboardRow keyboardRow1 = new KeyboardRow();
+//        for(String string:keyboardButtons1)keyboardRow.add(string);
+//
+//        KeyboardRow keyboardRow2 = new KeyboardRow();
+//
+//        switch (conversationManager.getConversationMode()){
+//            case TalkMode:
+//                keyboardRow2.add("/help");
+//                keyboardRow2.add("/pluginlist");
+//                keyboardRow2.add("/stop");
+//                break;
+//            case SingleMode:
+//                keyboardRow2.add("/exit");
+//                break;
+//        }
+//
+//        telegram.setReplyMarkup(GlobalSetting.getChatNumber(),keyboardRow,keyboardRow1,keyboardRow2);
+//    }
 
     public void restartReplyMarkup(){
         KeyboardRow keyboardRow = new KeyboardRow();

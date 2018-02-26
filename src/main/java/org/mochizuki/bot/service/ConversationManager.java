@@ -50,7 +50,7 @@ public class ConversationManager {
     }
 
     public void leaveSingleMode(){
-        serviceManager.restoreReplyMarkup();
+        serviceManager.restartReplyMarkup();
         conversationMode = ConversationMode.TalkMode;
         serviceManager.restartReplyMarkup();
     }
