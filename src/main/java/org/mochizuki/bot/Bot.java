@@ -56,6 +56,7 @@ public class Bot {
         if(willSetDefault){
             new DefaultConfig(this.hoconReader).setDefaultConfig();
             logger.info("Default Config has be created, please setting it");
+            System.out.println();
             System.exit(1);
         }
 

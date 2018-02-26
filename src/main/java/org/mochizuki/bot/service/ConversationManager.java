@@ -42,12 +42,17 @@ public class ConversationManager {
     }
 
     public void changeSingleMode(String ID){
-        if(this.singleMode.targetSingleMode(ID)) conversationMode = ConversationMode.SingleMode;
+        if(this.singleMode.targetSingleMode(ID)) {
+            conversationMode = ConversationMode.SingleMode;
+            serviceManager.restartReplyMarkup();
+            serviceManager.displayMessage(logger,"Change to single mode\"" + ID + "\"");
+        }
     }
 
     public void leaveSingleMode(){
         serviceManager.restoreReplyMarkup();
         conversationMode = ConversationMode.TalkMode;
+        serviceManager.restartReplyMarkup();
     }
 
     public void singleModeRegister(@NotNull Object plugin,@NotNull SingleModeInterface singleModeInterface){
@@ -60,5 +65,13 @@ public class ConversationManager {
 
     public void setAllReady(boolean allReady) {
         this.allReady = allReady;
+    }
+
+    public ServiceManager getServiceManager() {
+        return serviceManager;
+    }
+
+    public Logger getLogger() {
+        return logger;
     }
 }

@@ -35,8 +35,6 @@ public class Main {
 
             for(Path pluginPath : fileVisitorPathArrayList) urlArrayList.add(pluginPath.toUri().toURL());
 
-            URL url = Paths.get("").toUri().toURL();
-            URL url1 = Paths.get("plugin/ProjectL2.jar").toUri().toURL();
             URL[] urls = (URL[]) urlArrayList.toArray(new URL[0]);
 
             pluginUrlClassLoader = new URLClassLoader(urls);
@@ -70,7 +68,7 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.err.print("System build 0.80128");
+        System.err.print("System build 0.80226");
         logger.info("Starting L2 cache support system");
         logger.info("version " + version);
 

@@ -28,6 +28,7 @@ public class SingleMode {
         MessagePacket messagePacket = new MessagePacket();
         messagePacket.setOriginalMessage(inputMessage);
         if(inputMessage.compareTo("/exit") == 0){
+            conversationManager.getServiceManager().displayMessage(conversationManager.getLogger(),"Leaving Single Mode");
             conversationManager.leaveSingleMode();
             return;
         }

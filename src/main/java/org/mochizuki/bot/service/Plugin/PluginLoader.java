@@ -29,6 +29,8 @@ public class PluginLoader {
     private EventManager eventManager;
     private InjectService injectService;
 
+    public static ClassPath classPath;
+
     public PluginLoader(PluginManager pluginManager){
         this.logger = Logger.getLogger("PluginLoader");
         LoggerLevels.setLoggerLevels(logger, GlobalSetting.getLoggerSetting());
@@ -46,6 +48,7 @@ public class PluginLoader {
             ArrayList<Path> fileVisitorPathArrayList = pluginFileVisitor.getPathArrayList();
 
             ClassPath classPath = ClassPath.from(GlobalSetting.getUrlClassLoader());
+            PluginLoader.classPath = classPath;
             for (ClassPath.ClassInfo classInfo : classPath.getTopLevelClasses()) {
                 for (Path pluginPath : fileVisitorPathArrayList) {
                     String className = pluginPath.getFileName().toString().replaceAll(".jar", "");
@@ -56,7 +59,7 @@ public class PluginLoader {
                             logger.info("Debug : Class have Annotation");
                             pluginManager.registrationPlugin(aClass);
 
-                            Method[] aClassMethods = aClass.getMethods();
+                            Method[] aClassMethods = aClass.getDeclaredMethods();
                             for (Method aClassMethod : aClassMethods) {
                                 if (aClassMethod.isAnnotationPresent(Listener.class)) {
                                     logger.info("Debug : Methods " + aClassMethod.getName() + " have Listener Annotation");

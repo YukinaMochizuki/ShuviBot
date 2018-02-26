@@ -6,6 +6,7 @@ import org.mochizuki.bot.unit.GlobalSetting;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 import org.telegram.telegrambots.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
@@ -24,10 +25,13 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
         this.bot = bot;
     }
 
-    public void setReplyMarkup(long chat_id,@NotNull KeyboardRow keyboardButtons, KeyboardRow keyboardButtons1){
+    public void setReplyMarkup(long chat_id, @NotNull KeyboardRow keyboardButtons,
+                               KeyboardRow keyboardButtons1, KeyboardRow keyboardButtons2){
         List<KeyboardRow> keyboardRowList = new ArrayList<>();
         keyboardRowList.add(keyboardButtons);
         if(keyboardButtons1 != null)keyboardRowList.add(keyboardButtons1);
+        if(keyboardButtons2 != null)keyboardRowList.add(keyboardButtons2);
+
 
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
         keyboardMarkup.setKeyboard(keyboardRowList).setResizeKeyboard(true);
