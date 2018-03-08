@@ -107,7 +107,7 @@ public class ServiceManager implements ServiceInterface {
         if(nowCommunicate.compareTo("Telegram") == 0){
             telegram.sendMessage(GlobalSetting.getChatNumber(),"Warning : ".concat(message));
 
-            if(logger != null) logger.info(message);
+            if(logger != null) logger.warning(message);
             else this.logger.info("Unknown logger: " + message);
 
         }else if(nowCommunicate.compareTo("CDI") == 0 && logger != null) logger.warning(message);

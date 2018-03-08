@@ -101,7 +101,7 @@ public class Telegram extends TelegramLongPollingBot implements Communicate {
     public void onUpdateReceived(Update update){
         // We check if the update has a message and the message has text
         if(allReady) {
-            if (update.hasMessage() && update.getMessage().hasText() && update.getMessage().getChatId() == 240322569) {
+            if (update.hasMessage() && update.getMessage().hasText()) {
                 // Set variables
                 String message_text = update.getMessage().getText();
                 long chat_id = update.getMessage().getChatId();

@@ -1,5 +1,6 @@
 package org.mochizuki.bot;
 
+import ninja.leaping.configurate.commented.CommentedConfigurationNode;
 import org.mochizuki.bot.communicate.Telegram;
 import org.mochizuki.bot.configIO.HoconReader;
 import org.mochizuki.bot.service.ConversationManager;
@@ -21,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import java.util.concurrent.Delayed;
 import java.util.concurrent.TimeUnit;
@@ -35,6 +37,10 @@ public class Bot {
 
     Bot(){
         this.logger = Logger.getLogger("Bot Main");
+    }
+
+    static {
+        ApiContextInitializer.init();
     }
 
     protected void onInitialization(URLClassLoader pluginURLClassLoader) throws IOException {
@@ -73,15 +79,21 @@ public class Bot {
         logger.info("Set Logger levels to " + GlobalSetting.getLoggerSetting());
 
 //      =========================Debug=========================
+        List<? extends CommentedConfigurationNode> list = hoconReader.getRootNode().getNode("Bot").getChildrenList();
+        logger.info("==============Debug==============");
+        for(CommentedConfigurationNode commentedConfigurationNode : list){
+            logger.info(commentedConfigurationNode.getString());
+        }
+
 //        hoconReader.setValue("225","test");
 //        hoconReader.setValue("225","52","1234");
 //        logger.info("value = " + hoconReader.getValue("225","52"));
 //        hoconReader.serveFile();
+        logger.info("==============Debug==============");
 //      =========================Debug=========================
 
 //              Instantiate Telegram Bots API
         logger.info("Instantiate Telegram Bots API...");
-        ApiContextInitializer.init();
         TelegramBotsApi telegramBotsApi = new TelegramBotsApi();
         this.telegram = new Telegram(this);
         try {

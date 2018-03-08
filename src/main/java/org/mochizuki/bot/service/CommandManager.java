@@ -38,6 +38,7 @@ public class CommandManager {
     }
 
     public CommandManager addCommand(Method method ,Object object){
+        method.setAccessible(true);
         commandIndexUnitArrayList.add(new CommandIndexUnit(method, object));
         return commandManager;
     }
