@@ -14,4 +14,7 @@ dependencies {
     compile group: 'org.telegram', name: 'telegrambots', version: '3.4'
     compile 'com.google.guava:guava:23.5-jre'
     compile 'com.huaban:jieba-analysis:1.0.2'
+    compile files("lib/config-1.3.0.jar")
+    compile files("lib/configurate-core-3.3.jar")
+    compile files("lib/configurate-hocon-3.3.jar")
 }
