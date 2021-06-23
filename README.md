@@ -12,8 +12,9 @@ Event-driven lightweight chatbot framework that supports dependency injection an
 ## Requirements and Dependencies
 - JDK 1.8 (higher version may work but not tested)
 - Build system: Gradle >= 3.5-rc-2 (project development environment using 3.5-rc-2 but higher versions should also work)
-- Dependence: [guava 23.5](https://github.com/google/guava) - Google core libraries for Java
-- Dependence: [TelegramBots 3.4](https://github.com/rubenlagus/TelegramBots) - Java library to create bots using Telegram Bots API
-- Dependence in 'lib' folder: [Configurate 3.3](https://github.com/SpongePowered/Configurate) - Used to read configuration, serialize and deserialize object to hocon file
+- Dependency: [google/guava 23.5](https://github.com/google/guava) - Google core libraries for Java
+- Dependency: [rubenlagus/TelegramBots 3.4](https://github.com/rubenlagus/TelegramBots) - Java library to create bots using Telegram Bots API
+- Dependencies in 'lib' folder: [SpongePowered/Configurate 3.3](https://github.com/SpongePowered/Configurate) - Used to read configuration, serialize and deserialize object to hocon file
 
-## Build
+## Key Features
+- Lightweight: Only has faw dependency
