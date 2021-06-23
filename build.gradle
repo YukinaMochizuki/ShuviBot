@@ -18,3 +18,16 @@ dependencies {
     compile files("lib/configurate-core-3.3.jar")
     compile files("lib/configurate-hocon-3.3.jar")
 }
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'org.mochizuki.bot.Main'
+        )
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}
+
+
